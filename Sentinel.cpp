@@ -7,6 +7,7 @@
 #include <cmath>
 #include <sstream>
 #include <stdio.h>
+#include <unistd.h>
 #include "Sentinel.h"
 using namespace std;
 
