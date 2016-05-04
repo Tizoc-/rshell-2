@@ -4,8 +4,14 @@
 class Processes: public Base {
     private:
         vector<Base*> currCmds
-        vector<string> connectors
+        string andand;
+        string oror;
+        string semicolon;
+        string comment;
     public:
+        Processes();
+        ~Processes();
+        void addCmd(Base* nxtCmd);
         void parse();
         void execute();
 };
