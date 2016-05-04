@@ -9,6 +9,6 @@ class Command: public Base {
     Command();
     Commands(string comm, string arg);
     void execute();
-    string setCommand();
-    string setArg();
+    void setCommand();
+    void setArg();
 };
