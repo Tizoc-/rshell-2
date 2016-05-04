@@ -21,12 +21,12 @@ Command::Command(string comm, string arg)
     argument = arg;
 }
 
-string Command::setCommand(string comm)
+void Command::setCommand(string comm)
 {
     this->command = comm;
 }
 
-string Command::setArg(string arg)
+void Command::setArg(string arg)
 {
     this->argument = arg;
 }
