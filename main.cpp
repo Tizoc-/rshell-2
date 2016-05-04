@@ -6,6 +6,7 @@
 #include <vector>
 #include <cmath>
 #include <sstream>
+#include  <stdio.h>
 #include "Base.h"
 #include "Command.h"
 #include "Processes.h"
@@ -14,8 +15,14 @@
 #include "Oror.h"
 using namespace std;
 
-int main(int argc, char **argv)
+int main()
 {
-    
+    string input;
+    cout << "$ ";
+    getline(cin, input);
+    while(input != "exit")
+    {
+        
+    }
     return 0;
 }
