@@ -19,11 +19,14 @@ int main()
 {
     string input;
     cout << "$ ";
+    getline(cin, input);
     Proccesses mainProcess;
     while(input != "exit")
     {
+        mainProcess.parse(input);
+        mainProcess.execute();
+        cout << "$ ";
         getline(cin, input);
-        
     }
     return 0;
 }
