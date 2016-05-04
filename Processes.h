@@ -12,7 +12,7 @@ class Processes: public Base {
         Processes();
         ~Processes();
         void addCmd(Base* nxtCmd);
-        void parse();
+        void parse(string parse);
         void execute();
 };
 #endif

@@ -36,7 +36,7 @@ void Processes::execute()
     
 }
 
-void Processes::parse()
+void Processes::parse(string input)
 {
     
 }

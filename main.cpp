@@ -19,9 +19,10 @@ int main()
 {
     string input;
     cout << "$ ";
-    getline(cin, input);
+    Proccesses mainProcess;
     while(input != "exit")
     {
+        getline(cin, input);
         
     }
     return 0;
