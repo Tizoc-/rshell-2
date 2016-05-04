@@ -22,7 +22,24 @@ void Command::addPart(string comm)
 
 int Command::execute()
 {
+    int status = 0;
+    char *parameter;
+    parameter = new char[cmdVec.size()];
+    for(int i = 0; i < cmdVec.size(); ++i)
+    {
+        parameter[i] = cmdVec[i];
+    }
     int pid = -1;
     
     pid = fork();
+    
+    if(pid == 0)
+    {
+        status = execvp(cmdVec[0], cmdVec);
+    }
+    else
+    {
+        wait(0);
+        return status;
+    }
 }
