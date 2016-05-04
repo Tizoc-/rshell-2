@@ -24,7 +24,7 @@ Processes::~Processes()
 {
     for(int i = 0; i < currCmds; ++i)
     {
-        delete currCmds.at(i):
+        delete currCmds.at(i);
     }
 }
 
@@ -40,5 +40,16 @@ void Processes::execute()
 
 void Processes::parse(string input)
 {
-    
+    vector<string> currCs
+    istringstream inSS(input);
+    string currString;
+    while(inSS >> currString);
+    {
+        while(currLine != ";")
+        {
+            currCs.push_back(currString);
+            inSS >> currString;
+        }
+        
+    }
 }
