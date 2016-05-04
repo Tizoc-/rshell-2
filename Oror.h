@@ -7,3 +7,4 @@ class Oror: public Sentinel
     public:
         void execute();
 }
+#endif

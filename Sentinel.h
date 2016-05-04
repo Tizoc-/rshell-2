@@ -11,3 +11,4 @@ class Sentinel: public Base {
         ~Sentinel();
         virtual void execute();
 }
+#endif

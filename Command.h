@@ -12,3 +12,4 @@ class Command: public Base {
     void setCommand();
     void setArg();
 };
+#endif
