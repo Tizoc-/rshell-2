@@ -6,6 +6,7 @@
 #include <vector>
 #include <cmath>
 #include <sstream>
+#include <stdio.h>
 #include "Base.h"
 using namespace std;
 
