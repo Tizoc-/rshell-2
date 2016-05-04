@@ -7,7 +7,7 @@ class Command: public Base {
     string argument;
   public:
     Command();
-    Commands(string comm, string arg);
+    Command(string comm, string arg);
     void execute();
     void setCommand();
     void setArg();
