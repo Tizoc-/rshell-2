@@ -6,5 +6,8 @@ class Sentinel: public Base {
         Base* first;
         Base* second;
     public:
+        Sentinel();
+        Sentinel(Base* first, Base* second);
+        ~Sentinel();
         virtual void execute();
 }
