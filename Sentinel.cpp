@@ -6,6 +6,7 @@
 #include <vector>
 #include <cmath>
 #include <sstream>
+#include <stdio.h>
 #include "Sentinel.h"
 using namespace std;
 

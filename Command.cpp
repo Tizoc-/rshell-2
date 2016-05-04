@@ -6,6 +6,7 @@
 #include <vector>
 #include <cmath>
 #include <sstream>
+#include <stdio.h>
 #include "Command.h"
 using namespace std;
 
