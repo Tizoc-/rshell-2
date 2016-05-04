@@ -12,27 +12,17 @@ using namespace std;
 
 Command::Command()
 {
-    command = "";
-    argument = "";
+    cmdVec.size() = 0;
 }
 
-Command::Command(string comm, string arg)
+void Command::addPart(string comm)
 {
-    command = comm;
-    argument = arg;
-}
-
-void Command::setCommand(string comm)
-{
-    this->command = comm;
-}
-
-void Command::setArg(string arg)
-{
-    this->argument = arg;
+    cmdVec.push_back(comm);
 }
 
 int Command::execute()
 {
+    int pid = -1;
     
+    pid = fork();
 }

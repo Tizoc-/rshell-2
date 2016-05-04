@@ -3,11 +3,9 @@
 #include "Base.h"
 class Command: public Base {
   private:
-    string command;
-    string argument;
+    vector<string> cmdVec;
   public:
     Command();
-    Command(string comm, string arg);
     int execute();
     void setCommand();
     void setArg();
