@@ -32,7 +32,7 @@ void Command::setArg(string arg)
     this->argument = arg;
 }
 
-void Command::execute()
+int Command::execute()
 {
     
 }

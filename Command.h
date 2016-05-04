@@ -8,7 +8,7 @@ class Command: public Base {
   public:
     Command();
     Command(string comm, string arg);
-    void execute();
+    int execute();
     void setCommand();
     void setArg();
 };
