@@ -6,7 +6,8 @@
 #include <vector>
 #include <cmath>
 #include <sstream>
-#include  <stdio.h>
+#include <stdio.h>
+#include <unistd.h>
 #include "Base.h"
 #include "Command.h"
 #include "Processes.h"
