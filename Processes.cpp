@@ -24,7 +24,7 @@ Processes::~Processes()
 {
     for(int i = 0; i < currCmds; ++i)
     {
-        delete currCmds.at(i):
+        delete currCmds.at(i);
     }
 }
 
@@ -40,5 +40,6 @@ void Processes::execute()
 
 void Processes::parse(string input)
 {
+    
     
 }
