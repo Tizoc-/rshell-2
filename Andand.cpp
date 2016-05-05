@@ -13,5 +13,19 @@ using namespace std;
 
 int Andand::execute()
 {
-    
+    int currStatus = 0;
+    currStatus = first->execute();
+    if(currStatus != 0)
+    {
+        return -1;
+    }
+    else
+    {
+        currStatus = second->execute();
+        if(currStatus != 0)
+        {
+            return -1;
+        }
+    }
+    return currStatus
 }

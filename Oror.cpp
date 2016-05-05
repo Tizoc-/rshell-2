@@ -13,5 +13,13 @@ using namespace std;
 
 int Oror::execute()
 {
-    
+    int currStatus = 0;
+    currStatus = first->execute();
+    currStatus = 0;
+    currStatus = second->execute();
+    if(currStatus != 0)
+    {
+        return -1;
+    }
+    return currStatus;
 }
