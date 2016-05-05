@@ -11,7 +11,7 @@
 #include "Command.h"
 using namespace std;
 
-void Oror::execute()
+int Oror::execute()
 {
     
 }
