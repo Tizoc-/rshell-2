@@ -45,9 +45,17 @@ void Processes::parse(string input)
     string currString;
     while(inSS >> currString);
     {
+        bool hashtag = false;
         while(currLine != ";")
         {
-            currCs.push_back(currString);
+            
+            if(!hashtag)
+            {
+                currCs.push_back(currString)
+            }
+            else {
+                
+            }
             inSS >> currString;
         }
         
