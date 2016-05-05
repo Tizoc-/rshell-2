@@ -5,6 +5,6 @@
 class Andand: public Sentinel
 {
     public:
-        void execute();
+        int execute();
 }
 #endif

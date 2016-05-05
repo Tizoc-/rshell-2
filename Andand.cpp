@@ -11,7 +11,7 @@
 #include "Command.h"
 using namespace std;
 
-void Andand::execute()
+int Andand::execute()
 {
     
 }
