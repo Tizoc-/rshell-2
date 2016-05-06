@@ -47,12 +47,17 @@ void Processes::parse(string input)
     while(inSS >> currString);
     {
         bool hashtag = false;
-        while(currLine != ";")
+        bool semicolong = false;
+        while(!semicolon)
         {
             currCs.size() = 0;
-            if(string.find("#") != string::npos)
+            if(currString.find("#") != string::npos)
             {
                 hashtag = true;
+            }
+            if(currString.find(";") != string::npos)
+            {
+                semicolon = true;
             }
             if(!hashtag)
             {
