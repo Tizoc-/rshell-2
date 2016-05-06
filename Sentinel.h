@@ -9,6 +9,6 @@ class Sentinel: public Base {
         Sentinel();
         Sentinel(Base* first, Base* second);
         ~Sentinel();
-        virtual void execute();
+        virtual int execute();
 }
 #endif
