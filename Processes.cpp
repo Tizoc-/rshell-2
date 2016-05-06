@@ -38,19 +38,24 @@ void Processes::execute()
         temp = currCmds.at(i)->execute();
     }
 }
-
+//Processes parses the code to split it into separate command lines
+//should there be any semicolons present.
 void Processes::parse(string input)
 {
     vector<string> currCs
     istringstream inSS(input);
     string currString;
+    //Main loop for parsing input that contains semicolons
     while(inSS >> currString);
     {
         bool hashtag = false;
-        bool semicolong = false;
+        bool semicolon = false;
+        currCs.size() = 0;
+        currCs.push_back(currString);
         while(!semicolon)
         {
-            currCs.size() = 0;
+            inSS >> currString;
+            //Tests for hashtag/semicolon presence
             if(currString.find("#") != string::npos)
             {
                 hashtag = true;
@@ -61,11 +66,9 @@ void Processes::parse(string input)
             }
             if(!hashtag)
             {
-                currCs.push_back(currString)
+                currCs.push_back(currString);
             }
-            inSS >> currString;
         }
-        
     }
     
     
