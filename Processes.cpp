@@ -15,8 +15,6 @@ Processes::Processes()
     currCmds.size() = 0;
     string andand == "&&";
     string oror = "||";
-    string semicolon = ";";
-    string comment = "#";
 }
 
 Processes::~Processes()
@@ -34,7 +32,11 @@ void Processes::addCmd(Base* nxtCmd)
 
 void Processes::execute()
 {
-    
+    int temp = 0;
+    for(int i = 0; i < currCmds.size(); ++i)
+    {
+        temp = currCmds.at(i)->execute();
+    }
 }
 
 void Processes::parse(string input)
@@ -47,13 +49,14 @@ void Processes::parse(string input)
         bool hashtag = false;
         while(currLine != ";")
         {
-            
+            currCs.size() = 0;
+            if(string.find("#") != string::npos)
+            {
+                hashtag = true;
+            }
             if(!hashtag)
             {
                 currCs.push_back(currString)
-            }
-            else {
-                
             }
             inSS >> currString;
         }

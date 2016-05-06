@@ -6,8 +6,6 @@ class Processes: public Base {
         vector<Base*> currCmds
         string andand;
         string oror;
-        string semicolon;
-        string comment;
     public:
         Processes();
         ~Processes();
