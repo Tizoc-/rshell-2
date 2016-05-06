@@ -40,10 +40,7 @@ void Processes::execute()
 
 void Processes::parse(string input)
 {
-<<<<<<< HEAD
     
-    
-=======
     vector<string> currCs
     istringstream inSS(input);
     string currString;
@@ -56,5 +53,4 @@ void Processes::parse(string input)
         }
         
     }
->>>>>>> 0b8750180df1294e6b0a863a99205522bcbd62cb
 }
