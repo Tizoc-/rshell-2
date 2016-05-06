@@ -12,6 +12,7 @@ using namespace std;
 
 Command::Command()
 {
+    runStat = 0;
     cmdVec.size() = 0;
 }
 
@@ -42,4 +43,9 @@ int Command::execute()
         wait(0);
         return status;
     }
+}
+
+int Command::getrunstat()
+{
+    return runStat;
 }
