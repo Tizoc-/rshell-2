@@ -27,5 +27,5 @@ int Andand::execute()
             return -1;
         }
     }
-    return currStatus
+    return currStatus;
 }
