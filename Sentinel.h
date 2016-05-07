@@ -10,5 +10,5 @@ class Sentinel: public Base {
         Sentinel(Base* first, Base* second);
         ~Sentinel();
         virtual int execute();
-}
+};
 #endif

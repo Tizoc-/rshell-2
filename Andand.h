@@ -6,5 +6,5 @@ class Andand: public Sentinel
 {
     public:
         int execute();
-}
+};
 #endif

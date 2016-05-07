@@ -6,5 +6,5 @@ class Oror: public Sentinel
 {
     public:
         int execute();
-}
+};
 #endif
