@@ -8,6 +8,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "Base.h"
+#include "Command.h"
+#include "Andand.h"
+#include "Oror.h"
 using namespace std;
 //Simple constructor
 Processes::Processes()
@@ -64,23 +67,78 @@ void Processes::parse(string input)
             {
                 semicolon = true;
             }
-            if((!hashtag) && (!semicolon))
+            if(!hashtag)
             {
-                currCs.push_back(currString);
+                if(!semicolon)
+                {
+                    currCs.push_back(currString);
+                }
+                else
+                {
+                    currString.erase(currString.size() - 1);
+                    currCs.push_back(currString);
+                }
             }
         }
-        bool dealing;
-        string prevConnector;
-        string nextConnector;
-        vector<string> currCommand;
-        for(unsigned i = 0; i < currCs.size(); ++i)
+        bool detected = false;
+        for(unsigned j = 0; j < currCs.size(); ++j)
         {
             if(currCs.at(i) == andand || currCs.at(i) == oror)
             {
-                
+                detected = true;
+                break;
             }
-            currCommand.push_back(currCs.at(i));
-            
+        }
+        if(detected)
+        {
+            string prevConnector;
+            string nextConnector;
+            vector<string> firstCommand;
+            unsigned i = 0;
+            while(currCs.at(i) != andand && currCs.at(i) != oror)
+            {
+                firstCommand = currCs.at(i);
+                ++i;
+            }
+            prevConnector = currCs.at(i);
+            Command *temp3 = new Command(firstComand);
+            cmdVec.push_back(temp3);
+            ++i;
+            bool dealing = false;
+            vector<string> currCommand;
+            for(i; i < currCs.size(); ++i)
+            {
+                currCommand.push_back(currCs.at(i));
+                if(currCs.at(i) == andand || currCs.at(i) == oror)
+                {
+                    currCommand.pop_back();
+                    Command *temp = new Command(currCommand);
+                    nextConnector = currCs.at(i);
+                    if(prevConnector == andand)
+                    {
+                        Andand *temp2 = new Andand(cmdVec.at(cmdVec.size() - 1), temp);
+                        cmdVec.pop_back();
+                        cmdVec.push_back(temp2);
+                        currCommand.resize(0);
+                    }
+                    else
+                    {
+                        Oror * temp2 = new Oror(cmdVec.at(cmdVec.size() - 1), temp);
+                        cmdVec.pop_back();
+                        cmdVec.push_back(temp2);
+                        currCommand.resize(0);
+                    }
+                }
+            }
+        }
+        else {
+            vector<string> currCommand;
+            for(unsigned k = 0; k < currCs.size() ++i)
+            {
+                currCommand.push_back(currCs.at(i));
+            }
+            Command *temp = new Command(currCommand);
+            cmdVec.push_back(temp);
         }
     }
     //Second loop that parses the remaining part of the input
