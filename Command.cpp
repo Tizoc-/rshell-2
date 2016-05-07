@@ -26,11 +26,6 @@ char *convert(const std::string & s)
    return pc; 
 }
 
-void Command::addPart(string comm)
-{
-    this->cmdVec.push_back(comm);
-}
-
 int Command::execute()
 {
     runStat = 1;

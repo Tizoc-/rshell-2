@@ -8,7 +8,6 @@ class Command: public Base {
   public:
     Command();
     int execute();
-    void addPart(std::string comm);
     int getrunstat();
 };
 #endif

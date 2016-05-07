@@ -54,7 +54,7 @@ void Processes::parse(string input)
         while(!semicolon)
         {
             inSS >> currString;
-            input.erase(0, currString.size())
+            input.erase(0, currString.size());
             //Tests for hashtag/semicolon presence
             if(currString.find("#") != string::npos)
             {
@@ -69,5 +69,21 @@ void Processes::parse(string input)
                 currCs.push_back(currString);
             }
         }
+        bool dealing;
+        string prevConnector;
+        string nextConnector;
+        vector<string> currCommand;
+        for(unsigned i = 0; i < currCs.size(); ++i)
+        {
+            if(currCs.at(i) == andand || currCs.at(i) == oror)
+            {
+                
+            }
+            currCommand.push_back(currCs.at(i));
+            
+        }
     }
+    //Second loop that parses the remaining part of the input
+    //Also, if the input never contained any semicolons,
+    //the parse will go straight to this part of the code
 }
