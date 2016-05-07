@@ -33,17 +33,18 @@ void Command::addPart(string comm)
 
 int Command::execute()
 {
-    char** cstrings = new char*[this->cmdVec.size()];
+    runStat = 1;
+    char** cstrings = new char*[cmdVec.size()];
     for(size_t i = 0; i < this->cmdVec.size(); ++i)
     {
-        cstrings[i] = new char[this->cmdVec[i].size() + 1];
-        std::strcpy(cstrings[i], this->cmdVec[i].c_str());
+        cstrings[i] = new char[cmdVec[i].size() + 1];
+        std::strcpy(cstrings[i], cmdVec[i].c_str());
     }
     pid_t pid = fork();
     if(pid == 0)
     {
         //Child process!
-        this->runStat = execvp(cstrings[0], cstrings);
+        runStat = execvp(cstrings[0], cstrings);
     }
     int status;
     waitpid(pid, &status, 0);
@@ -57,5 +58,5 @@ int Command::execute()
 
 int Command::getrunstat()
 {
-    return this->runStat;
+    return runStat;
 }
