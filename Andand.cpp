@@ -8,6 +8,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <unistd.h>
+#include "Andand.h"
 #include "Command.h"
 using namespace std;
 
@@ -15,14 +16,14 @@ int Andand::execute()
 {
     int currStatus = 0;
     currStatus = first->execute();
-    if(currStatus != 0)
+    if(currStatus != 1)
     {
         return -1;
     }
     else
     {
         currStatus = second->execute();
-        if(currStatus != 0)
+        if(currStatus != 1)
         {
             return -1;
         }
