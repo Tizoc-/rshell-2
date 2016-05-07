@@ -144,5 +144,73 @@ void Processes::parse(string input)
     //Second loop that parses the remaining part of the input
     //Also, if the input never contained any semicolons,
     //the parse will go straight to this part of the code
-    bool hashtag2 = false;
+    currCs.resize(0);
+    while(inSS > currString)
+    {
+        if(currString.find("#") != string::npos)
+        {
+            break;
+        }
+        currCs.push_back(currString);
+    }
+    bool detected = false;
+    for(unsigned j = 0; j < currCs.size(); ++j)
+    {
+        if(currCs.at(i) == andand || currCs.at(i) == oror)
+        {
+            detected = true;
+            break;
+        }
+    }
+    if(detected)
+    {
+        string prevConnector;
+        string nextConnector;
+        vector<string> firstCommand;
+        unsigned i = 0;
+        while(currCs.at(i) != andand && currCs.at(i) != oror)
+        {
+            firstCommand = currCs.at(i);
+            ++i;
+        }
+        prevConnector = currCs.at(i);
+        Command *temp3 = new Command(firstComand);
+        cmdVec.push_back(temp3);
+        ++i;
+        bool dealing = false;
+        vector<string> currCommand;
+        for(i; i < currCs.size(); ++i)
+        {
+            currCommand.push_back(currCs.at(i));
+            if(currCs.at(i) == andand || currCs.at(i) == oror)
+            {
+                currCommand.pop_back();
+                Command *temp = new Command(currCommand);
+                nextConnector = currCs.at(i);
+                if(prevConnector == andand)
+                {
+                    Andand *temp2 = new Andand(cmdVec.at(cmdVec.size() - 1), temp);
+                    cmdVec.pop_back();
+                    cmdVec.push_back(temp2);
+                    currCommand.resize(0);
+                }
+                else
+                {
+                    Oror * temp2 = new Oror(cmdVec.at(cmdVec.size() - 1), temp);
+                    cmdVec.pop_back();
+                    cmdVec.push_back(temp2);
+                    currCommand.resize(0);
+                }
+            }
+        }
+    }
+    else {
+        vector<string> currCommand;
+        for(unsigned k = 0; k < currCs.size() ++i)
+        {
+            currCommand.push_back(currCs.at(i));
+        }
+        Command *temp = new Command(currCommand);
+        cmdVec.push_back(temp);
+    }
 }
