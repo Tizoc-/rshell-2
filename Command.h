@@ -7,6 +7,7 @@ class Command: public Base {
     std::vector<std::string> cmdVec;
   public:
     Command();
+    Command(std::vector<std::string> currCommand);
     int execute();
     int getrunstat();
 };

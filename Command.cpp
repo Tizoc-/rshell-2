@@ -19,6 +19,12 @@ Command::Command()
     cmdVec.resize(0);
 }
 
+Command::Command(vector<string> currCommand)
+{
+    runStat = 0;
+    cmdVec = currCommand;
+}
+
 char *convert(const std::string & s)
 {
    char *pc = new char[s.size()+1];
