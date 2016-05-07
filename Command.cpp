@@ -7,45 +7,55 @@
 #include <sstream>
 #include <stdio.h>
 #include <unistd.h>
+#include <cstring>
+#include <sys/wait.h>
+#include <algorithm>
 #include "Command.h"
 using namespace std;
 
 Command::Command()
 {
     runStat = 0;
-    cmdVec.size() = 0;
+    cmdVec.resize(0);
+}
+
+char *convert(const std::string & s)
+{
+   char *pc = new char[s.size()+1];
+   std::strcpy(pc, s.c_str());
+   return pc; 
 }
 
 void Command::addPart(string comm)
 {
-    cmdVec.push_back(comm);
+    this->cmdVec.push_back(comm);
 }
 
 int Command::execute()
 {
-    int status = 0;
-    char *parameter;
-    parameter = new char[cmdVec.size()];
-    for(int i = 0; i < cmdVec.size(); ++i)
+    char** cstrings = new char*[this->cmdVec.size()];
+    for(size_t i = 0; i < this->cmdVec.size(); ++i)
     {
-        parameter[i] = cmdVec[i];
+        cstrings[i] = new char[this->cmdVec[i].size() + 1];
+        std::strcpy(cstrings[i], this->cmdVec[i].c_str());
     }
-    int pid = -1;
-    
-    pid = fork();
-    
+    pid_t pid = fork();
     if(pid == 0)
     {
-        status = execvp(cmdVec[0], cmdVec);
+        //Child process!
+        this->runStat = execvp(cstrings[0], cstrings);
     }
-    else
+    int status;
+    waitpid(pid, &status, 0);
+    for(unsigned i = 0; i < cmdVec.size(); ++i)
     {
-        wait(0);
-        return status;
+        delete[] cstrings[i];
     }
+    delete[] cstrings;
+    return runStat;
 }
 
 int Command::getrunstat()
 {
-    return runStat;
+    return this->runStat;
 }

@@ -4,12 +4,11 @@
 class Command: public Base {
   private:
     int runStat;
-    vector<string> cmdVec;
+    std::vector<std::string> cmdVec;
   public:
     Command();
     int execute();
-    void setCommand();
-    void setArg();
+    void addPart(std::string comm);
     int getrunstat();
 };
 #endif
