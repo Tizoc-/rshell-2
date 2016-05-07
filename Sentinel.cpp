@@ -8,6 +8,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <unistd.h>
+#include "Command.h"
 #include "Sentinel.h"
 using namespace std;
 
@@ -18,6 +19,12 @@ Sentinel::Sentinel()
 }
 
 Sentinel::Sentinel(Base* first, Base* second)
+{
+    this->first = first;
+    this->second = second;
+}
+
+Sentinel::Sentinel(Base* first, Command* second)
 {
     this->first = first;
     this->second = second;

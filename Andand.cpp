@@ -12,6 +12,24 @@
 #include "Command.h"
 using namespace std;
 
+Andand::Andand()
+{
+    first = 0;
+    second = 0;
+}
+
+Andand::Andand(Base* first, Base* second)
+{
+    this->first = first;
+    this->second = second;
+}
+
+Andand::Andand(Base* first, Command* second)
+{
+    this->first = first;
+    this->second = second;
+}
+
 int Andand::execute()
 {
     int currStatus = 0;

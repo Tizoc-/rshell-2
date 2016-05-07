@@ -8,9 +8,28 @@
 #include <sstream>
 #include <stdio.h>
 #include <unistd.h>
+#include "Sentinel.h"
 #include "Oror.h"
 #include "Command.h"
 using namespace std;
+
+Oror::Oror()
+{
+    first = 0;
+    second = 0;
+}
+
+Oror::Oror(Base* first, Base* second)
+{
+    this->first = first;
+    this->second = second;
+}
+
+Oror::Oror(Base* first, Command* second)
+{
+    this->first = first;
+    this->second = second;
+}
 
 int Oror::execute()
 {

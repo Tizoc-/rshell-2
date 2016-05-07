@@ -9,7 +9,6 @@ class Processes: public Base {
     public:
         Processes();
         ~Processes();
-        void addCmd(Base* nxtCmd);
         void parse(std::string parse);
         int execute();
 };
