@@ -144,4 +144,5 @@ void Processes::parse(string input)
     //Second loop that parses the remaining part of the input
     //Also, if the input never contained any semicolons,
     //the parse will go straight to this part of the code
+    bool hashtag2 = false;
 }
