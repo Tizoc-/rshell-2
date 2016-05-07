@@ -3,14 +3,14 @@
 #include "Base.h"
 class Processes: public Base {
     private:
-        vector<Base*> currCmds
-        string andand;
-        string oror;
+        std::vector<Base*> currCmds;
+        std::string andand;
+        std::string oror;
     public:
         Processes();
         ~Processes();
         void addCmd(Base* nxtCmd);
-        void parse(string parse);
-        void execute();
+        void parse(std::string parse);
+        int execute();
 };
 #endif

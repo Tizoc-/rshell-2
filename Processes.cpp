@@ -9,14 +9,14 @@
 #include <unistd.h>
 #include "Base.h"
 using namespace std;
-
+//Simple constructor
 Processes::Processes()
 {
     currCmds.size() = 0;
     string andand == "&&";
     string oror = "||";
 }
-
+//Simple destructor
 Processes::~Processes()
 {
     for(int i = 0; i < currCmds; ++i)
@@ -24,12 +24,12 @@ Processes::~Processes()
         delete currCmds.at(i);
     }
 }
-
+//This is used to add connector objects to the currCmds vector
 void Processes::addCmd(Base* nxtCmd)
 {
     this->currCmds.push_back(nxtCmd);
 }
-
+//This executes all objects within the object's currCmds vector
 void Processes::execute()
 {
     int temp = 0;
