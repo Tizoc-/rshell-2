@@ -46,15 +46,15 @@ void Processes::parse(string input)
     istringstream inSS(input);
     string currString;
     //Main loop for parsing input that contains semicolons
-    while(inSS >> currString);
+    while(input.find(";") == string::npos);
     {
         bool hashtag = false;
         bool semicolon = false;
         currCs.size() = 0;
-        currCs.push_back(currString);
         while(!semicolon)
         {
             inSS >> currString;
+            input.erase(0, currString.size())
             //Tests for hashtag/semicolon presence
             if(currString.find("#") != string::npos)
             {
@@ -64,12 +64,10 @@ void Processes::parse(string input)
             {
                 semicolon = true;
             }
-            if(!hashtag)
+            if((!hashtag) && (!semicolon))
             {
                 currCs.push_back(currString);
             }
         }
     }
-    
-    
 }
