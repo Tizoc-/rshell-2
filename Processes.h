@@ -2,10 +2,9 @@
 #define PROCESSES_H
 #include "Base.h"
 #include "Command.h"
-#include "Sentinel.h"
 #include "Andand.h"
 #include "Oror.h"
-class Processes: public Base {
+class Processes {
     private:
         std::vector<Base*> currCmds;
         std::string andand;

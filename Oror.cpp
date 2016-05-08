@@ -8,10 +8,10 @@
 #include <sstream>
 #include <stdio.h>
 #include <unistd.h>
-#include "Sentinel.h"
+using namespace std;
+
 #include "Oror.h"
 #include "Command.h"
-using namespace std;
 
 Oror::Oror()
 {

@@ -2,8 +2,7 @@
 #define OROR_H
 #include "Base.h"
 #include "Command.h"
-#include "Sentinel.h"
-class Oror: public Sentinel
+class Oror: public Base
 {
     public:
         Oror();

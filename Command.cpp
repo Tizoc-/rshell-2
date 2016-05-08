@@ -12,6 +12,7 @@
 #include <algorithm>
 using namespace std;
 
+#include "Base.h"
 #include "Command.h"
 
 Command::Command()

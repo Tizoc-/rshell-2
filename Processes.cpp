@@ -11,7 +11,6 @@ using namespace std;
 
 #include "Processes.h"
 #include "Base.h"
-#include "Sentinel.h"
 #include "Command.h"
 #include "Andand.h"
 #include "Oror.h"
@@ -101,7 +100,7 @@ void Processes::parse(string input)
                 ++i;
             }
             prevConnector = currCs.at(i);
-            Command *temp3 = new Command(firstCommand);
+            Base *temp3 = new Command(firstCommand);
             currCmds.push_back(temp3);
             ++i;
             vector<string> currCommand;
@@ -111,18 +110,18 @@ void Processes::parse(string input)
                 if(currCs.at(i) == andand || currCs.at(i) == oror)
                 {
                     currCommand.pop_back();
-                    Command *temp = new Command(currCommand);
+                    Base *temp = new Command(currCommand);
                     nextConnector = currCs.at(i);
                     if(prevConnector == andand)
                     {
-                        Sentinel *temp2 = new Andand(currCmds.at(currCmds.size() - 1), temp);
+                        Base *temp2 = new Andand(currCmds.at(currCmds.size() - 1), temp);
                         currCmds.pop_back();
                         currCmds.push_back(temp2);
                         currCommand.resize(0);
                     }
                     else
                     {
-                        Sentinel * temp2 = new Oror(currCmds.at(currCmds.size() - 1), temp);
+                        Base * temp2 = new Oror(currCmds.at(currCmds.size() - 1), temp);
                         currCmds.pop_back();
                         currCmds.push_back(temp2);
                         currCommand.resize(0);
@@ -136,7 +135,7 @@ void Processes::parse(string input)
             {
                 currCommand.push_back(currCs.at(k));
             }
-            Command *temp = new Command(currCommand);
+            Base *temp = new Command(currCommand);
             currCmds.push_back(temp);
         }
     }
@@ -173,7 +172,7 @@ void Processes::parse(string input)
             ++i;
         }
         prevConnector = currCs.at(i);
-        Command *temp3 = new Command(firstCommand);
+        Base *temp3 = new Command(firstCommand);
         currCmds.push_back(temp3);
         ++i;
         vector<string> currCommand;
@@ -183,18 +182,18 @@ void Processes::parse(string input)
             if(currCs.at(i) == andand || currCs.at(i) == oror)
             {
                 currCommand.pop_back();
-                Command *temp = new Command(currCommand);
+                Base *temp = new Command(currCommand);
                 nextConnector = currCs.at(i);
                 if(prevConnector == andand)
                 {
-                    Sentinel *temp2 = new Andand(currCmds.at(currCmds.size() - 1), temp);
+                    Base *temp2 = new Andand(currCmds.at(currCmds.size() - 1), temp);
                     currCmds.pop_back();
                     currCmds.push_back(temp2);
                     currCommand.resize(0);
                 }
                 else
                 {
-                    Sentinel * temp2 = new Oror(currCmds.at(currCmds.size() - 1), temp);
+                    Base * temp2 = new Oror(currCmds.at(currCmds.size() - 1), temp);
                     currCmds.pop_back();
                     currCmds.push_back(temp2);
                     currCommand.resize(0);
@@ -208,7 +207,7 @@ void Processes::parse(string input)
         {
             currCommand.push_back(currCs.at(k));
         }
-        Command *temp = new Command(currCommand);
+        Base *temp = new Command(currCommand);
         currCmds.push_back(temp);
     }
 }
