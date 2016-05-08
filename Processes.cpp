@@ -48,7 +48,7 @@ void Processes::parse(string input)
     istringstream inSS(input);
     string currString;
     //Main loop for parsing input that contains semicolons
-    while(input.find(";") == string::npos);
+    while(input.find(";") != string::npos)
     {
         bool hashtag = false;
         bool semicolon = false;
