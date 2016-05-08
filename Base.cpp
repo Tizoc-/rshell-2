@@ -12,6 +12,8 @@
 #include <algorithm>
 using namespace std;
 
+#include "Base.h"
+
 Base::~Base()
 {
 }
