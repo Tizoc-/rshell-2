@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include "Processes.h"
 #include "Base.h"
+#include "Sentinel.h"
 #include "Command.h"
 #include "Andand.h"
 #include "Oror.h"
