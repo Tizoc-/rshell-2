@@ -4,6 +4,9 @@
 #include "Command.h"
 class Andand: public Base
 {
+    private:
+        Base * first;
+        Base * second;
     public:
         Andand();
         Andand(Base* first, Command* second);

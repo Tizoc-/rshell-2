@@ -10,6 +10,7 @@
 #include <unistd.h>
 using namespace std;
 
+#include "Base.h"
 #include "Andand.h"
 #include "Command.h"
 

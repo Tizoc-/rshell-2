@@ -10,6 +10,7 @@
 #include <unistd.h>
 using namespace std;
 
+#include "Base.h"
 #include "Oror.h"
 #include "Command.h"
 

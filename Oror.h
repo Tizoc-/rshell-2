@@ -4,6 +4,9 @@
 #include "Command.h"
 class Oror: public Base
 {
+    private:
+        Base * first;
+        Base * second;
     public:
         Oror();
         Oror(Base* first, Command* second);
