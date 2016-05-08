@@ -8,9 +8,10 @@
 #include <sstream>
 #include <stdio.h>
 #include <unistd.h>
+using namespace std;
+
 #include "Andand.h"
 #include "Command.h"
-using namespace std;
 
 Andand::Andand()
 {

@@ -10,8 +10,9 @@
 #include <cstring>
 #include <sys/wait.h>
 #include <algorithm>
-#include "Command.h"
 using namespace std;
+
+#include "Command.h"
 
 Command::Command()
 {

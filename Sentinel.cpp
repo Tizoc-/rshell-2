@@ -8,9 +8,10 @@
 #include <sstream>
 #include <stdio.h>
 #include <unistd.h>
+using namespace std;
+
 #include "Command.h"
 #include "Sentinel.h"
-using namespace std;
 
 Sentinel::Sentinel()
 {

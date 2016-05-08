@@ -7,13 +7,15 @@
 #include <sstream>
 #include <stdio.h>
 #include <unistd.h>
+using namespace std;
+
 #include "Processes.h"
 #include "Base.h"
 #include "Sentinel.h"
 #include "Command.h"
 #include "Andand.h"
 #include "Oror.h"
-using namespace std;
+
 //Simple constructor
 Processes::Processes()
 {

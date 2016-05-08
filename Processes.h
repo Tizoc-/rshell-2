@@ -1,6 +1,10 @@
 #ifndef PROCESSES_H
 #define PROCESSES_H
 #include "Base.h"
+#include "Command.h"
+#include "Sentinel.h"
+#include "Andand.h"
+#include "Oror.h"
 class Processes: public Base {
     private:
         std::vector<Base*> currCmds;
