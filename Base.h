@@ -2,6 +2,7 @@
 #define BASE_H
 class Base {
     public:
+        virtual ~Base();
         virtual int execute() = 0;
 };
 #endif

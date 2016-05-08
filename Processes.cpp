@@ -24,7 +24,7 @@ Processes::Processes()
 //Simple destructor
 Processes::~Processes()
 {
-    for(int i = 0; i < currCmds.size(); ++i)
+    for(unsigned i = 0; i < currCmds.size(); ++i)
     {
         delete currCmds.at(i);
     }
@@ -33,7 +33,7 @@ Processes::~Processes()
 int Processes::execute()
 {
     int temp = 0;
-    for(int i = 0; i < currCmds.size(); ++i)
+    for(unsigned i = 0; i < currCmds.size(); ++i)
     {
         temp = currCmds.at(i)->execute();
     }
