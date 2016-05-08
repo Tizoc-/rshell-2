@@ -46,6 +46,11 @@ int Command::execute()
     {
         //Child process!
         runStat = execvp(cstrings[0], cstrings);
+        if(runStat < 0)
+        {
+            perror("Command has failed to execute");
+            return runStat;
+        }
     }
     int status;
     waitpid(pid, &status, 0);
