@@ -19,8 +19,6 @@ using namespace std;
 Processes::Processes()
 {
     currCmds.resize(0);
-    string andand = "&&";
-    string oror = "||";
 }
 //Simple destructor
 Processes::~Processes()

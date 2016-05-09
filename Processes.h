@@ -7,8 +7,6 @@
 class Processes {
     private:
         std::vector<Base*> currCmds;
-        std::string andand;
-        std::string oror;
     public:
         Processes();
         ~Processes();
