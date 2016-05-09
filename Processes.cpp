@@ -94,7 +94,7 @@ void Processes::parse(string input)
             string nextConnector;
             vector<string> firstCommand;
             unsigned i = 0;
-            while(currCs.at(i) != andand && currCs.at(i) != oror)
+            while(currCs.at(i) != "&&" && currCs.at(i) != "||")
             {
                 firstCommand.push_back(currCs.at(i));
                 ++i;
