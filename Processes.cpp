@@ -56,7 +56,7 @@ void Processes::parse(string input)
         while(!semicolon)
         {
             inSS >> currString;
-            input.erase(0, currString.size());
+            input.erase(0, currString.size() + 1);
             //Tests for hashtag/semicolon presence
             if(currString.find("#") != string::npos)
             {
@@ -82,7 +82,7 @@ void Processes::parse(string input)
         bool detected = false;
         for(unsigned j = 0; j < currCs.size(); ++j)
         {
-            if(currCs.at(j) == andand || currCs.at(j) == oror)
+            if(currCs.at(j) == "||" || currCs.at(j) == "&&")
             {
                 detected = true;
                 break;
@@ -107,12 +107,12 @@ void Processes::parse(string input)
             for(;i < currCs.size(); ++i)
             {
                 currCommand.push_back(currCs.at(i));
-                if(currCs.at(i) == andand || currCs.at(i) == oror)
+                if(currCs.at(i) == "&&" || currCs.at(i) == "||")
                 {
                     currCommand.pop_back();
                     Base *temp = new Command(currCommand);
                     nextConnector = currCs.at(i);
-                    if(prevConnector == andand)
+                    if(prevConnector == "&&")
                     {
                         Base *temp2 = new Andand(currCmds.at(currCmds.size() - 1), temp);
                         currCmds.pop_back();
@@ -154,7 +154,7 @@ void Processes::parse(string input)
     bool detected = false;
     for(unsigned j = 0; j < currCs.size(); ++j)
     {
-        if(currCs.at(j) == andand || currCs.at(j) == oror)
+        if(currCs.at(j) == "&&" || currCs.at(j) == "||")
         {
             detected = true;
             break;
@@ -166,7 +166,7 @@ void Processes::parse(string input)
         string nextConnector;
         vector<string> firstCommand;
         unsigned i = 0;
-        while(currCs.at(i) != andand && currCs.at(i) != oror)
+        while(currCs.at(i) != "&&" && currCs.at(i) != "||")
         {
             firstCommand.push_back(currCs.at(i));
             ++i;
@@ -179,12 +179,12 @@ void Processes::parse(string input)
         for(; i < currCs.size(); ++i)
         {
             currCommand.push_back(currCs.at(i));
-            if(currCs.at(i) == andand || currCs.at(i) == oror)
+            if(currCs.at(i) == "&&" || currCs.at(i) == "||")
             {
                 currCommand.pop_back();
                 Base *temp = new Command(currCommand);
                 nextConnector = currCs.at(i);
-                if(prevConnector == andand)
+                if(prevConnector == "&&")
                 {
                     Base *temp2 = new Andand(currCmds.at(currCmds.size() - 1), temp);
                     currCmds.pop_back();
@@ -200,6 +200,20 @@ void Processes::parse(string input)
                 }
             }
         }
+        Base * temp = new Command(currCommand);
+        if(prevConnector == "&&")
+            {
+                Base *temp2 = new Andand(currCmds.at(currCmds.size() - 1), temp);
+                currCmds.pop_back();
+                currCmds.push_back(temp2);
+                currCommand.resize(0);
+            }
+        else
+        {
+            Base * temp2 = new Oror(currCmds.at(currCmds.size() - 1), temp);
+            currCmds.pop_back();
+            currCmds.push_back(temp2);
+        }
     }
     else {
         vector<string> currCommand;
@@ -214,5 +228,9 @@ void Processes::parse(string input)
 
 void Processes::reset()
 {
+    for(unsigned i = 0; i < currCmds.size(); ++i)
+    {
+        delete currCmds.at(i);
+    }
     this->currCmds.resize(0);
 }
