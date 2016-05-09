@@ -37,12 +37,14 @@ char *convert(const std::string & s)
 int Command::execute()
 {
     runStat = 1;
-    char** cstrings = new char*[cmdVec.size()];
-    for(size_t i = 0; i < this->cmdVec.size(); ++i)
+    char** cstrings = new char*[cmdVec.size() + 1];
+    unsigned i = 0;
+    for(; i < this->cmdVec.size(); ++i)
     {
         cstrings[i] = new char[cmdVec[i].size() + 1];
         std::strcpy(cstrings[i], cmdVec[i].c_str());
     }
+    cstrings[i] = NULL;
     pid_t pid = fork();
     if(pid == 0)
     {

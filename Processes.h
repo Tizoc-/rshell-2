@@ -14,5 +14,6 @@ class Processes {
         ~Processes();
         void parse(std::string parse);
         int execute();
+        void reset();
 };
 #endif

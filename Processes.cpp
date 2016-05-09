@@ -211,3 +211,8 @@ void Processes::parse(string input)
         currCmds.push_back(temp);
     }
 }
+
+void Processes::reset()
+{
+    this->currCmds.resize(0);
+}

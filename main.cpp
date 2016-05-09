@@ -22,6 +22,7 @@ int main()
     {
         mainProcess.parse(input);
         mainProcess.execute();
+        mainProcess.reset();
         cout << "$ ";
         getline(cin, input);
     }
