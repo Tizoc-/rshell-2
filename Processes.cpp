@@ -43,7 +43,7 @@ int Processes::execute()
 void Processes::parse(string input)
 {
     
-    vector<string> currCs
+    vector<string> currCs;
     vector<string> currCs;
     istringstream inSS(input);
     string currString;
