@@ -1,5 +1,5 @@
-a.out : main.o Processes.o Base.o Andand.o Oror.o Command.o
-	g++ -W -Wall -Werror -pedantic -ansi main.o Processes.o Base.o Andand.o Oror.o Command.o -o a.out
+rshell : main.o Processes.o Base.o Andand.o Oror.o Command.o
+	g++ -W -Wall -Werror -pedantic -ansi main.o Processes.o Base.o Andand.o Oror.o Command.o -o rshell
 
 main.o : main.cpp Processes.cpp Processes.h
 	g++ -W -Wall -Werror -pedantic -ansi -c main.cpp
