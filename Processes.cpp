@@ -42,6 +42,8 @@ int Processes::execute()
 //should there be any semicolons present.
 void Processes::parse(string input)
 {
+    
+    vector<string> currCs
     vector<string> currCs;
     istringstream inSS(input);
     string currString;
@@ -247,4 +249,5 @@ void Processes::reset()
         delete currCmds.at(i);
     }
     this->currCmds.resize(0);
+
 }
