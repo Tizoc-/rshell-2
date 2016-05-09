@@ -42,7 +42,7 @@ class Menu {
 				return;
 			}
 			unsigned popbacks = history.size() - history_index;
-			for(unsigned i = 0; i < popbacks; ++i)
+			for(unsigned i = 1; i < popbacks; ++i)
 			{
 				history.pop_back();
 			}
