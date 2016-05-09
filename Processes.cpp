@@ -117,14 +117,16 @@ void Processes::parse(string input)
                     nextConnector = currCs.at(i);
                     if(prevConnector == "&&")
                     {
-                        Base *temp2 = new Andand(currCmds.at(currCmds.size() - 1), temp);
+                        Base *temp2 = new Andand(currCmds.at(
+                            currCmds.size() - 1), temp);
                         currCmds.pop_back();
                         currCmds.push_back(temp2);
                         currCommand.resize(0);
                     }
                     else
                     {
-                        Base * temp2 = new Oror(currCmds.at(currCmds.size() - 1), temp);
+                        Base * temp2 = new Oror(currCmds.at(
+                            currCmds.size() - 1), temp);
                         currCmds.pop_back();
                         currCmds.push_back(temp2);
                         currCommand.resize(0);
@@ -194,14 +196,16 @@ void Processes::parse(string input)
                 nextConnector = currCs.at(i);
                 if(prevConnector == "&&")
                 {
-                    Base *temp2 = new Andand(currCmds.at(currCmds.size() - 1), temp);
+                    Base *temp2 = new Andand(currCmds.at(currCmds.size() - 1), 
+                        temp);
                     currCmds.pop_back();
                     currCmds.push_back(temp2);
                     currCommand.resize(0);
                 }
                 else
                 {
-                    Base * temp2 = new Oror(currCmds.at(currCmds.size() - 1), temp);
+                    Base * temp2 = new Oror(currCmds.at(currCmds.size() - 1), 
+                        temp);
                     currCmds.pop_back();
                     currCmds.push_back(temp2);
                     currCommand.resize(0);
@@ -211,7 +215,8 @@ void Processes::parse(string input)
         Base * temp = new Command(currCommand);
         if(prevConnector == "&&")
             {
-                Base *temp2 = new Andand(currCmds.at(currCmds.size() - 1), temp);
+                Base *temp2 = new Andand(currCmds.at(currCmds.size() - 1), 
+                    temp);
                 currCmds.pop_back();
                 currCmds.push_back(temp2);
                 currCommand.resize(0);
