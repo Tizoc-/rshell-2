@@ -4,6 +4,7 @@
 #include "Command.h"
 class Andand: public Base
 {
+    //Declares all needed functionality, including its pointer variables.
     private:
         Base * first;
         Base * second;

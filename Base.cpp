@@ -13,7 +13,8 @@
 using namespace std;
 
 #include "Base.h"
-
+//Both the destructor and the constructor are left empty, as the classes only
+//only need to inherit an execute function.
 Base::Base()
 {
 }

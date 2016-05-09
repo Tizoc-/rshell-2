@@ -77,6 +77,7 @@ void Processes::parse(string input)
                 }
             }
         }
+        //Here, we detect the presence of connectors.
         bool detected = false;
         for(unsigned j = 0; j < currCs.size(); ++j)
         {
@@ -86,6 +87,10 @@ void Processes::parse(string input)
                 break;
             }
         }
+        //If it detects one, it sends the vector to a loop
+        //that runs until the end of the current command string.
+        //It stops at the next connector, looks at the previous connector,
+        //and creates objects and links them correspondingly.
         if(detected)
         {
             string prevConnector;
@@ -127,6 +132,7 @@ void Processes::parse(string input)
                 }
             }
         }
+        //This runs if there no connectors left after semicolon detecting.
         else {
             vector<string> currCommand;
             for(unsigned k = 0; k < currCs.size(); ++k)
@@ -139,7 +145,7 @@ void Processes::parse(string input)
     }
     //Second loop that parses the remaining part of the input
     //Also, if the input never contained any semicolons,
-    //the parse will go straight to this part of the code
+    //the parse will go straight to this part of the code.
     currCs.resize(0);
     while(inSS >> currString)
     {
@@ -149,6 +155,7 @@ void Processes::parse(string input)
         }
         currCs.push_back(currString);
     }
+    //Again, detects whether the string has connectors.
     bool detected = false;
     for(unsigned j = 0; j < currCs.size(); ++j)
     {
@@ -158,6 +165,9 @@ void Processes::parse(string input)
             break;
         }
     }
+    //If it detects them, it sends them to be parsed,
+    //where connector objects are created after the first command is created
+    //and subsequently linked until the end of parsing.
     if(detected)
     {
         string prevConnector;
@@ -223,7 +233,8 @@ void Processes::parse(string input)
         currCmds.push_back(temp);
     }
 }
-
+//This is used to clean up the Processes vector in order to gather further
+//input from the user.
 void Processes::reset()
 {
     for(unsigned i = 0; i < currCmds.size(); ++i)

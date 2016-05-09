@@ -11,7 +11,8 @@
 using namespace std;
 
 #include "Processes.h"
-
+//The main control interface. All main does is
+//create a process object in order to keep the program running and working.
 int main()
 {
     cout << "$ ";
