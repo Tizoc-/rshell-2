@@ -1,18 +1,21 @@
 #ifndef PROCESSES_H
 #define PROCESSES_H
 #include "Base.h"
-class Processes: public Base {
+#include "Command.h"
+#include "Andand.h"
+#include "Oror.h"
+class Processes {
+    //Declares the vector of Base pointers that the object
+    //will use for executables.
     private:
-        vector<Base*> currCmds
-        string andand;
-        string oror;
-        string semicolon;
-        string comment;
+        std::vector<Base*> currCmds;
+    //Standard declaration of constructors, destructor, and
+    //subsequent functionality.
     public:
         Processes();
         ~Processes();
-        void addCmd(Base* nxtCmd);
-        void parse(string parse);
-        void execute();
+        void parse(std::string parse);
+        int execute();
+        void reset();
 };
 #endif

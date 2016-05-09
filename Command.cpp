@@ -7,39 +7,75 @@
 #include <sstream>
 #include <stdio.h>
 #include <unistd.h>
-#include "Command.h"
+#include <cstring>
+#include <sys/wait.h>
+#include <algorithm>
 using namespace std;
 
+#include "Base.h"
+#include "Command.h"
+//Runstat will be used by the command object in order to relay
+//its execution status; that is, if it failed or not.
+//It also has a vector that contains the operands of its command.
 Command::Command()
 {
-    cmdVec.size() = 0;
+    runStat = 0;
+    cmdVec.resize(0);
 }
-
-void Command::addPart(string comm)
+//This constructor is similar to default, except that it directly
+//initializes the cmdVec variable.
+Command::Command(vector<string> currCommand)
 {
-    cmdVec.push_back(comm);
+    runStat = 0;
+    cmdVec = currCommand;
 }
-
+//This is used by execute to tranform a s vector of strings to
+//a char * array for use in execvp.
+char *convert(const std::string & s)
+{
+   char *pc = new char[s.size()+1];
+   std::strcpy(pc, s.c_str());
+   return pc; 
+}
+//The execute function starts by converting the string vector to a
+//char * array. Then, we fork a process to run a command.
+//Because execvp only returns if it fails to execute a command,
+//runStat gets updated if and only if the command fails.
+//Finally, it clens up the dynamic allocation of the transformation process,
+//and returns the runStat.
 int Command::execute()
 {
-    int status = 0;
-    char *parameter;
-    parameter = new char[cmdVec.size()];
-    for(int i = 0; i < cmdVec.size(); ++i)
+    runStat = 1;
+    char** cstrings = new char*[cmdVec.size() + 1];
+    unsigned i = 0;
+    for(; i < this->cmdVec.size(); ++i)
     {
-        parameter[i] = cmdVec[i];
+        cstrings[i] = new char[cmdVec[i].size() + 1];
+        std::strcpy(cstrings[i], cmdVec[i].c_str());
     }
-    int pid = -1;
-    
-    pid = fork();
-    
+    cstrings[i] = NULL;
+    pid_t pid = fork();
     if(pid == 0)
     {
-        status = execvp(cmdVec[0], cmdVec);
+        //Child process!
+        runStat = execvp(cstrings[0], cstrings);
+        if(runStat < 0)
+        {
+            perror("Command has failed to execute");
+            return runStat;
+        }
     }
-    else
+    int status;
+    waitpid(pid, &status, 0);
+    for(unsigned i = 0; i < cmdVec.size(); ++i)
     {
-        wait(0);
-        return status;
+        delete[] cstrings[i];
     }
+    delete[] cstrings;
+    return runStat;
+}
+//Simple accessor to access the runStat.
+int Command::getrunstat()
+{
+    return runStat;
 }
