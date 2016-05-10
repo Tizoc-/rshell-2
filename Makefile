@@ -1,4 +1,4 @@
-OUT = lib/alib.a
+OUT = rshell
 CC = g++
 CFLAGS = -Wall -Werror -pedantic -ansi
 ODIR = bin
@@ -10,13 +10,14 @@ _OBJS = main.o Processes.o Base.o Command.o Andand.o \
 OBJS = $(patsubst %,$(ODIR)/%,$(_OBJS))
 
 
-$(ODIR)/%.o: $(SDIR)/%.cpp 
-    $(CC) -c $(INC) -o $@ $< $(CFLAGS) 
+$(ODIR)/%.o: $(SDIR)/%.cpp
+	@mkdir -p $(ODIR)
+	$(CC) -c $(INC) -o $@ $< $(CFLAGS)
 
 $(OUT): $(OBJS) 
-    ar rvs $(OUT) $^
+	ar rvs $(OUT) $^
 
 .PHONY: clean
 
 clean:
-    rm -f $(ODIR)/*.o $(OUT)
+	rm -f $(ODIR)/*.o $(OUT)
