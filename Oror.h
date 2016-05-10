@@ -4,6 +4,8 @@
 #include "Command.h"
 class Oror: public Base
 {
+    //Similar to its sibling Andand class, this function declares
+    //its pointers and basic functionality.
     private:
         Base * first;
         Base * second;

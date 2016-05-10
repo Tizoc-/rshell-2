@@ -20,4 +20,4 @@ Command.o : Base.cpp Base.h Command.cpp Command.h
 	g++ -W -Wall -Werror -pedantic -ansi -c Command.cpp
 	
 clean : 
-		rm main.o Processes.o Base.o Andand.o Oror.o Command.o
+		rm  main.o Processes.o Base.o Andand.o Oror.o Command.o
