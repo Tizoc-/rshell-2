@@ -1,20 +1,22 @@
-CFLAGS = -Wall -Werror -ansi -pedantic
+OUT = lib/alib.a
 CC = g++
-EXEC = rshell
-SRC_DIR = src
-BIN_DIR = bin
-OBJ = ../$(BIN_DIR)/main.o ../$(BIN_DIR)/Processes.o ../$(BIN_DIR)/Base.o ../$(BIN_DIR)/Command.o ../$(BIN_DIR)/Andand.o ../$(BIN_DIR)/Oror.o
+CFLAGS = -Wall -Werror -pedantic -ansi
+ODIR = bin
+SDIR = src
+INC = -Iinc
 
-all: rshell
+_OBJS = main.o Processes.o Base.o Command.o Andand.o \
+    	Oror.o
+OBJS = $(patsubst %,$(ODIR)/%,$(_OBJS))
 
-../$(BIN_DIR)/%.o: $(SRC_DIR)%.cpp $(SRC_DIR)%.h
-    $(CC) $(CFLAGS) -c $(SRC_DIR)%.cpp -o $@
 
-$(EXEC): $(OBJ)
-    @mkdir -p bin
-    $(CC) $(CFLAGS) $(BIN_DIR)/$(OBJ) -o $(BIN_DIR)/$(EXEC)
+$(ODIR)/%.o: $(SDIR)/%.cpp 
+    $(CC) -c $(INC) -o $@ $< $(CFLAGS) 
 
-.PHONY : clean
+$(OUT): $(OBJS) 
+    ar rvs $(OUT) $^
+
+.PHONY: clean
 
 clean:
-    -rm -rf $(BIN_DIR)
+    rm -f $(ODIR)/*.o $(OUT)
