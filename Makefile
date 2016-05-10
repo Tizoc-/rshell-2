@@ -15,10 +15,10 @@ $(ODIR)/%.o: $(SDIR)/%.cpp
 	@mkdir -p $(ODIR)
 	$(CC) -c $(INC) -o $@ $< $(CFLAGS)
 
-$(ODIR)/(OUT): $(OBJS)
-	ar rvs $(OUT) $^
+$(ODIR)/rshell: $(OBJS)
+	$(CC) -o $@ $(OBJS) $(CFLAGS)
 
 .PHONY: clean
 
 clean:
-	rm -f $(ODIR)/*.o $(OUT)
+	rm -f $(ODIR)/*.o $(ODIR)/$(OUT)
