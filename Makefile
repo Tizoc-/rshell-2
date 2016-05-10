@@ -9,12 +9,13 @@ _OBJS = main.o Processes.o Base.o Command.o Andand.o \
     	Oror.o
 OBJS = $(patsubst %,$(ODIR)/%,$(_OBJS))
 
+all: $(ODIR)/rshell
 
 $(ODIR)/%.o: $(SDIR)/%.cpp
 	@mkdir -p $(ODIR)
 	$(CC) -c $(INC) -o $@ $< $(CFLAGS)
 
-$(OUT): $(OBJS) 
+$(ODIR)/(OUT): $(OBJS)
 	ar rvs $(OUT) $^
 
 .PHONY: clean
