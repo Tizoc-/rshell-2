@@ -1,14 +1,20 @@
-CC=g++
-CC_FLAGS=-Wall -Werror -ansi -pedantic
-EXEC=rshell
-SOURCES=$(wildcard /src/*.cpp)
-OBJECTS=$(SOURCES:.cpp=.o)
+CFLAGS = -Wall -Werror -ansi -pedantic
+CC = g++
+EXEC = rshell
+SRC_DIR = src
+BIN_DIR = bin
+OBJ = ../$(BIN_DIR)/main.o ../$(BIN_DIR)/Processes.o ../$(BIN_DIR)/Base.o ../$(BIN_DIR)/Command.o ../$(BIN_DIR)/Andand.o ../$(BIN_DIR)/Oror.o
 
-$(EXEC): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(EXEC)
+all: rshell
 
-%.o: %.cpp
-	$(CC) -c $(CC_FLAGS) $< -o $@
+../$(BIN_DIR)/%.o: $(SRC_DIR)%.cpp $(SRC_DIR)%.h
+    $(CC) $(CFLAGS) -c $(SRC_DIR)%.cpp -o $@
+
+$(EXEC): $(OBJ)
+    @mkdir -p bin
+    $(CC) $(CFLAGS) $(BIN_DIR)/$(OBJ) -o $(BIN_DIR)/$(EXEC)
+
+.PHONY : clean
 
 clean:
-	rm -f $(EXEC) $(OBJECTS)
+    -rm -rf $(BIN_DIR)
