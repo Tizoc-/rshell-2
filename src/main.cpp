@@ -23,7 +23,7 @@ int main()
     pwd = getpwuid(geteuid());
     char host [128];
     gethostname(host, sizeof(host));
-    cout << pwd->pw_name << "@" << host << "$ ";
+    cout << pwd->pw_name << "@" << host << " $ ";
     string input;
     getline(cin, input);
     Processes mainProcess;
@@ -33,7 +33,7 @@ int main()
         mainProcess.execute();
         mainProcess.reset();
         input = "";
-        cout << pwd->pw_name << "@" << host << "$ ";
+        cout << pwd->pw_name << "@" << host << " $ ";
         getline(cin, input);
     }
     return 0;
