@@ -7,6 +7,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <unistd.h>
+#include <algorithm>
 using namespace std;
 
 #include "Processes.h"
@@ -64,6 +65,8 @@ void Processes::parse(string input)
             {
                 semicolon = true;
             }
+            currString.erase(remove(currString.begin(), currString.end(), '"'), 
+                currString.end());
             if(!hashtag)
             {
                 if(!semicolon)
@@ -151,6 +154,8 @@ void Processes::parse(string input)
     currCs.resize(0);
     while(inSS >> currString)
     {
+        currString.erase(remove(currString.begin(), currString.end(), '"'), 
+                currString.end());
         if(currString.find("#") != string::npos)
         {
             break;
