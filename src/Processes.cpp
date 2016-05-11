@@ -51,6 +51,7 @@ void Processes::parse(string input)
     {
         bool hashtag = false;
         bool semicolon = false;
+        bool first = false;
         currCs.resize(0);
         while(!semicolon)
         {
@@ -60,13 +61,32 @@ void Processes::parse(string input)
             if(currString.find("#") != string::npos)
             {
                 hashtag = true;
+                if(currString.find("#") != 0 && (!first))
+                {
+                    currCs.push_back(currString);
+                    first = true;
+                }
             }
             if(currString.find(";") != string::npos)
             {
                 semicolon = true;
             }
-            currString.erase(remove(currString.begin(), currString.end(), '"'), 
-                currString.end());
+            string temp = "";
+            for(unsigned g = 0; g < currString.size(); ++g)
+            {
+                if(currString.at(g) == '"')
+                {
+                    if(g > 0 && currString.at(g - 1) == '\\')
+                    {
+                        temp += currString.at(g);
+                    }
+                }
+                else if(currString.at(g) != '\\')
+                {
+                    temp += currString.at(g);
+                }
+            }
+            currString = temp;
             if(!hashtag)
             {
                 if(!semicolon)
@@ -75,7 +95,7 @@ void Processes::parse(string input)
                 }
                 else
                 {
-                    currString.erase(currString.size() - 1);
+                    currString.erase(currString.size() - 1, 1);
                     currCs.push_back(currString);
                 }
             }
@@ -154,10 +174,28 @@ void Processes::parse(string input)
     currCs.resize(0);
     while(inSS >> currString)
     {
-        currString.erase(remove(currString.begin(), currString.end(), '"'), 
-                currString.end());
+        string temp = "";
+        for(unsigned g = 0; g < currString.size(); ++g)
+        {
+            if(currString.at(g) == '"')
+            {
+                if(g > 0 && currString.at(g - 1) == '\\')
+                {
+                    temp += currString.at(g);
+                }
+            }
+            else if(currString.at(g) != '\\')
+            {
+                temp += currString.at(g);
+            }
+        }
+        currString = temp;
         if(currString.find("#") != string::npos)
         {
+            if(currString.find("#") != 0)
+            {
+                currCs.push_back(currString);
+            }
             break;
         }
         currCs.push_back(currString);
