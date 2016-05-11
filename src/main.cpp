@@ -21,8 +21,9 @@ int main()
     
     struct passwd *pwd;
     pwd = getpwuid(geteuid());
-    cout << pwd->pw_name;
-    cout << "$ ";
+    char host [128];
+    gethostname(host, sizeof(host));
+    cout << pwd->pw_name << "@" << host << "$ ";
     string input;
     getline(cin, input);
     Processes mainProcess;
