@@ -45,6 +45,10 @@ char *convert(const std::string & s)
 //and returns the runStat.
 int Command::execute()
 {
+    if(cmdVec.at(0) == "exit")
+    {
+        exit(0);
+    }
     runStat = 1;
     char** cstrings = new char*[cmdVec.size() + 1];
     unsigned i = 0;
@@ -59,7 +63,7 @@ int Command::execute()
     {
         //Child process!
         runStat = execvp(cstrings[0], cstrings);
-        if(runStat < 0)
+        if(runStat != 1)
         {
             perror("Command has failed to execute");
             return runStat;
