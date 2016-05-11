@@ -8,6 +8,9 @@
 #include <sstream>
 #include <stdio.h>
 #include <unistd.h>
+#include <pwd.h>
+#include <sys/types.h>
+
 using namespace std;
 
 #include "Processes.h"
@@ -15,6 +18,10 @@ using namespace std;
 //create a process object in order to keep the program running and working.
 int main()
 {
+    
+    struct passwd *pwd;
+    pwd = getpwuid(geteuid());
+    cout << pwd->pw_name;
     cout << "$ ";
     string input;
     getline(cin, input);
