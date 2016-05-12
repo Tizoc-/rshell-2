@@ -47,125 +47,138 @@ void Processes::parse(string input)
     istringstream inSS(input);
     string currString;
     //Main loop for parsing input that contains semicolons
-    while(input.find(";") != string::npos)
+    if(count(input.begin(), input.end(), ';') >= 1)
     {
-        bool hashtag = false;
-        bool semicolon = false;
-        bool first = false;
-        currCs.resize(0);
-        while(!semicolon)
+        while(input.find(";") != string::npos)
         {
-            inSS >> currString;
-            input.erase(0, currString.size() + 1);
-            //Tests for hashtag/semicolon presence
-            if(currString.find("#") != string::npos)
+            if(count(input.begin(), input.end(), ';') == 1 
+                && input.find(";") != input.size() - 1 
+                && (input.at(input.find(";") + 1)) == '"')
             {
-                hashtag = true;
-                if(currString.find("#") != 0 && (!first))
+                break;
+            }
+            if(count(input.begin(), input.end(), ';') == 1 && input.find(";") == input.size() - 1)
+            {
+                break;
+            }
+            bool hashtag = false;
+            bool semicolon = false;
+            bool first = false;
+            currCs.resize(0);
+            while(!semicolon)
+            {
+                inSS >> currString;
+                input.erase(0, currString.size() + 1);
+                //Tests for hashtag/semicolon presence
+                if(currString.find("#") != string::npos)
                 {
-                    currCs.push_back(currString);
-                    first = true;
+                    hashtag = true;
+                    if(currString.find("#") != 0 && (!first))
+                    {
+                        currCs.push_back(currString);
+                        first = true;
+                    }
                 }
-            }
-            if(currString.find(";") != string::npos)
-            {
-                semicolon = true;
-            }
-            string temp = "";
-            for(unsigned g = 0; g < currString.size(); ++g)
-            {
-                if(currString.at(g) == '"')
+                if(currString.find(";") != string::npos)
                 {
-                    if(g > 0 && currString.at(g - 1) == '\\')
+                    semicolon = true;
+                }
+                string temp = "";
+                for(unsigned g = 0; g < currString.size(); ++g)
+                {
+                    if(currString.at(g) == '"')
+                    {
+                        if(g > 0 && currString.at(g - 1) == '\\')
+                        {
+                            temp += currString.at(g);
+                        }
+                    }
+                    else if(currString.at(g) != '\\')
                     {
                         temp += currString.at(g);
                     }
                 }
-                else if(currString.at(g) != '\\')
+                currString = temp;
+                if(!hashtag)
                 {
-                    temp += currString.at(g);
-                }
-            }
-            currString = temp;
-            if(!hashtag)
-            {
-                if(!semicolon)
-                {
-                    currCs.push_back(currString);
-                }
-                else
-                {
-                    currString.erase(currString.size() - 1, 1);
-                    currCs.push_back(currString);
-                }
-            }
-        }
-        //Here, we detect the presence of connectors.
-        bool detected = false;
-        for(unsigned j = 0; j < currCs.size(); ++j)
-        {
-            if(currCs.at(j) == "||" || currCs.at(j) == "&&")
-            {
-                detected = true;
-                break;
-            }
-        }
-        //If it detects one, it sends the vector to a loop
-        //that runs until the end of the current command string.
-        //It stops at the next connector, looks at the previous connector,
-        //and creates objects and links them correspondingly.
-        if(detected)
-        {
-            string prevConnector;
-            string nextConnector;
-            vector<string> firstCommand;
-            unsigned i = 0;
-            while(currCs.at(i) != "&&" && currCs.at(i) != "||")
-            {
-                firstCommand.push_back(currCs.at(i));
-                ++i;
-            }
-            prevConnector = currCs.at(i);
-            Base *temp3 = new Command(firstCommand);
-            currCmds.push_back(temp3);
-            ++i;
-            vector<string> currCommand;
-            for(;i < currCs.size(); ++i)
-            {
-                currCommand.push_back(currCs.at(i));
-                if(currCs.at(i) == "&&" || currCs.at(i) == "||")
-                {
-                    currCommand.pop_back();
-                    Base *temp = new Command(currCommand);
-                    nextConnector = currCs.at(i);
-                    if(prevConnector == "&&")
+                    if(!semicolon)
                     {
-                        Base *temp2 = new Andand(currCmds.at(
-                            currCmds.size() - 1), temp);
-                        currCmds.pop_back();
-                        currCmds.push_back(temp2);
-                        currCommand.resize(0);
+                        currCs.push_back(currString);
                     }
                     else
                     {
-                        Base * temp2 = new Oror(currCmds.at(
-                            currCmds.size() - 1), temp);
-                        currCmds.pop_back();
-                        currCmds.push_back(temp2);
-                        currCommand.resize(0);
+                        currString.erase(currString.size() - 1, 1);
+                        currCs.push_back(currString);
                     }
                 }
             }
-        }
-        //This runs if there no connectors left after semicolon detecting.
-        else {
-            vector<string> currCommand;
-            for(unsigned k = 0; k < currCs.size(); ++k)
+            //Here, we detect the presence of connectors.
+            bool detected = false;
+            for(unsigned j = 0; j < currCs.size(); ++j)
             {
-                currCommand.push_back(currCs.at(k));
+                if(currCs.at(j) == "||" || currCs.at(j) == "&&")
+                {
+                    detected = true;
+                    break;
+                }
             }
-            Base *temp = new Command(currCommand);
-            currCmds.push_back(temp);
+            //If it detects one, it sends the vector to a loop
+            //that runs until the end of the current command string.
+            //It stops at the next connector, looks at the previous connector,
+            //and creates objects and links them correspondingly.
+            if(detected)
+            {
+                string prevConnector;
+                string nextConnector;
+                vector<string> firstCommand;
+                unsigned i = 0;
+                while(currCs.at(i) != "&&" && currCs.at(i) != "||")
+                {
+                    firstCommand.push_back(currCs.at(i));
+                    ++i;
+                }
+                prevConnector = currCs.at(i);
+                Base *temp3 = new Command(firstCommand);
+                currCmds.push_back(temp3);
+                ++i;
+                vector<string> currCommand;
+                for(;i < currCs.size(); ++i)
+                {
+                    currCommand.push_back(currCs.at(i));
+                    if(currCs.at(i) == "&&" || currCs.at(i) == "||")
+                    {
+                        currCommand.pop_back();
+                        Base *temp = new Command(currCommand);
+                        nextConnector = currCs.at(i);
+                        if(prevConnector == "&&")
+                        {
+                            Base *temp2 = new Andand(currCmds.at(
+                                currCmds.size() - 1), temp);
+                            currCmds.pop_back();
+                            currCmds.push_back(temp2);
+                            currCommand.resize(0);
+                        }
+                        else
+                        {
+                            Base * temp2 = new Oror(currCmds.at(
+                                currCmds.size() - 1), temp);
+                            currCmds.pop_back();
+                            currCmds.push_back(temp2);
+                            currCommand.resize(0);
+                        }
+                    }
+                }
+            }
+            //This runs if there no connectors left after semicolon detecting.
+            else {
+                vector<string> currCommand;
+                for(unsigned k = 0; k < currCs.size(); ++k)
+                {
+                    currCommand.push_back(currCs.at(k));
+                }
+                Base *temp = new Command(currCommand);
+                currCmds.push_back(temp);
+            }
         }
     }
     //Second loop that parses the remaining part of the input
@@ -174,6 +187,10 @@ void Processes::parse(string input)
     currCs.resize(0);
     while(inSS >> currString)
     {
+        if(currString.at(currString.size() - 1) == ';')
+        {
+            currString.erase(currString.size() - 1, 1);
+        }
         string temp = "";
         for(unsigned g = 0; g < currString.size(); ++g)
         {
