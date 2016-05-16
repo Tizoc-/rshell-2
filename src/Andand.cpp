@@ -39,7 +39,7 @@ Andand::Andand(Base* first, Command* second)
 //which indicates failer.
 int Andand::execute()
 {
-    int currStatus = 0;
+    int currStatus = 1;
     currStatus = first->execute();
     if(currStatus != 1)
     {

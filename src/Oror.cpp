@@ -36,7 +36,7 @@ Oror::Oror(Base* first, Command* second)
 //By or logic, its second variable only executes if the first has failed.
 int Oror::execute()
 {
-    int currStatus = 0;
+    int currStatus = 1;
     currStatus = first->execute();
     if(currStatus != 1)
     {

@@ -260,6 +260,7 @@ void Processes::parse(string input)
                         temp);
                     currCmds.pop_back();
                     currCmds.push_back(temp2);
+                    prevConnector = nextConnector;
                     currCommand.resize(0);
                 }
                 else
@@ -268,6 +269,7 @@ void Processes::parse(string input)
                         temp);
                     currCmds.pop_back();
                     currCmds.push_back(temp2);
+                    prevConnector = nextConnector;
                     currCommand.resize(0);
                 }
             }
