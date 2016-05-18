@@ -214,7 +214,7 @@ void Processes::parse(string input)
                     temp = new Test(currCommand);
                 }
                 else {
-                    Base *temp = new Command(currCommand);
+                    temp = new Command(currCommand);
                 }
                 currCmds.push_back(temp);
             }
