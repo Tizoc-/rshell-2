@@ -1,10 +1,10 @@
 #ifndef TEST_H
 #define TEST_H
-class Test {
-    private:
-        std::vector<std:string> commandVec;
+#include "Command.h"
+class Test : public Command {
     public:
         Test(std::vector<std::string> commandVec);
         int execute();
+        int getrunstat();
 };
 #endif

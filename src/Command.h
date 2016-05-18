@@ -4,7 +4,7 @@
 class Command: public Base {
   //Unlike its parent class, this class has variables to
   //check its execution and the parameters of said execution.
-  private:
+  protected:
     int runStat;
     std::vector<std::string> cmdVec;
   public:
