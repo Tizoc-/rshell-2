@@ -6,7 +6,7 @@ SDIR = src
 INC = -Iinc
 
 _OBJS = main.o Processes.o Base.o Command.o Andand.o \
-    	Oror.o
+    	Oror.o Test.o
 OBJS = $(patsubst %,$(ODIR)/%,$(_OBJS))
 
 all: $(ODIR)/rshell
