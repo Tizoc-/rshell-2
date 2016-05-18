@@ -15,6 +15,7 @@ using namespace std;
 #include "Command.h"
 #include "Andand.h"
 #include "Oror.h"
+#include "Test.h"
 
 //Simple constructor
 Processes::Processes()
@@ -138,7 +139,15 @@ void Processes::parse(string input)
                     ++i;
                 }
                 prevConnector = currCs.at(i);
-                Base *temp3 = new Command(firstCommand);
+                Base * temp3;
+                if(firstCommand.at(0) == "test")
+                {
+                    temp3 = new Test(firstCommand);
+                }
+                else
+                {
+                    temp3 = new Command(firstCommand);
+                }
                 currCmds.push_back(temp3);
                 ++i;
                 vector<string> currCommand;
@@ -148,24 +157,47 @@ void Processes::parse(string input)
                     if(currCs.at(i) == "&&" || currCs.at(i) == "||")
                     {
                         currCommand.pop_back();
-                        Base *temp = new Command(currCommand);
-                        nextConnector = currCs.at(i);
-                        if(prevConnector == "&&")
+                        if(currCommand.at(0) == "test")
                         {
-                            Base *temp2 = new Andand(currCmds.at(
-                                currCmds.size() - 1), temp);
-                            currCmds.pop_back();
-                            currCmds.push_back(temp2);
-                            currCommand.resize(0);
+                            Base *temp = new Test(currCommand);
+                            nextConnector = currCs.at(i);
+                            if(prevConnector == "&&")
+                            {
+                                Base *temp2 = new Andand(currCmds.at(
+                                    currCmds.size() - 1), temp);
+                                currCmds.pop_back();
+                                currCmds.push_back(temp2);
+                                currCommand.resize(0);
+                            }
+                            else
+                            {
+                                Base * temp2 = new Oror(currCmds.at(
+                                    currCmds.size() - 1), temp);
+                                currCmds.pop_back();
+                                currCmds.push_back(temp2);
+                                currCommand.resize(0);
+                            }
                         }
-                        else
-                        {
-                            Base * temp2 = new Oror(currCmds.at(
-                                currCmds.size() - 1), temp);
-                            currCmds.pop_back();
-                            currCmds.push_back(temp2);
-                            currCommand.resize(0);
-                        }
+                        else {
+                            Base *temp = new Command(currCommand);
+                            nextConnector = currCs.at(i);
+                            if(prevConnector == "&&")
+                            {
+                                Base *temp2 = new Andand(currCmds.at(
+                                    currCmds.size() - 1), temp);
+                                currCmds.pop_back();
+                                currCmds.push_back(temp2);
+                                currCommand.resize(0);
+                            }
+                            else
+                            {
+                                Base * temp2 = new Oror(currCmds.at(
+                                    currCmds.size() - 1), temp);
+                                currCmds.pop_back();
+                                currCmds.push_back(temp2);
+                                currCommand.resize(0);
+                            }
+                        }    
                     }
                 }
             }
@@ -176,7 +208,14 @@ void Processes::parse(string input)
                 {
                     currCommand.push_back(currCs.at(k));
                 }
-                Base *temp = new Command(currCommand);
+                Base *temp;
+                if(currCommand.at(0) == "test")
+                {
+                    temp = new Test(currCommand);
+                }
+                else {
+                    Base *temp = new Command(currCommand);
+                }
                 currCmds.push_back(temp);
             }
         }
@@ -242,7 +281,14 @@ void Processes::parse(string input)
             ++i;
         }
         prevConnector = currCs.at(i);
-        Base *temp3 = new Command(firstCommand);
+        Base *temp3;
+        if(firstCommand.at(0) == "test")
+        {
+            temp3 = new Test(firstCommand);
+        }
+        else {
+            temp3 = new Command(firstCommand);
+        }
         currCmds.push_back(temp3);
         ++i;
         vector<string> currCommand;
@@ -252,7 +298,14 @@ void Processes::parse(string input)
             if(currCs.at(i) == "&&" || currCs.at(i) == "||")
             {
                 currCommand.pop_back();
-                Base *temp = new Command(currCommand);
+                Base *temp;
+                if(currCommand.at(0) == "test")
+                {
+                    temp = new Test(currCommand);
+                }
+                else {
+                    temp = new Command(currCommand);
+                }
                 nextConnector = currCs.at(i);
                 if(prevConnector == "&&")
                 {
@@ -274,7 +327,14 @@ void Processes::parse(string input)
                 }
             }
         }
-        Base * temp = new Command(currCommand);
+        Base * temp;
+        if(currCommand.at(0) == "test")
+        {
+            temp = new Test(currCommand);
+        }
+        else {
+            temp = new Command(currCommand);
+        }
         if(prevConnector == "&&")
             {
                 Base *temp2 = new Andand(currCmds.at(currCmds.size() - 1), 
@@ -296,7 +356,14 @@ void Processes::parse(string input)
         {
             currCommand.push_back(currCs.at(k));
         }
-        Base *temp = new Command(currCommand);
+        Base *temp;
+        if(currCommand.at(0) == "test")
+        {
+            temp = new Test(currCommand);
+        }
+        else {
+            temp = new Command(currCommand);
+        }
         currCmds.push_back(temp);
     }
 }
