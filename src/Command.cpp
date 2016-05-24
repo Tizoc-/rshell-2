@@ -76,7 +76,7 @@ int Command::execute()
         delete[] cstrings[i];
     }
     delete[] cstrings;
-    return runStat;
+    return status;
 }
 //Simple accessor to access the runStat.
 int Command::getrunstat()
