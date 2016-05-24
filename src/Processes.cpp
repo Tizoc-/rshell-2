@@ -132,7 +132,7 @@ void Processes::parse(string input)
             //that runs until the end of the current command string.
             //It stops at the next connector, looks at the previous connector,
             //and creates objects and links them correspondingly.
-            if(detected && !parenthsis)
+            if(detected && !parenthesis)
             {
                 string prevConnector;
                 string nextConnector;
@@ -208,7 +208,201 @@ void Processes::parse(string input)
             }
             else if(detected && parenthesis)
             {
-                
+                string prevConnector;
+                string nextConnector;
+                vector<string> currCommand;
+                for(unsigned i = 0; i < currCs.size(); ++i)
+                {
+                    if(currCs.at(i).find("(") != string::npos)
+                    {
+                        bool found = false;
+                        vector<string> split1;
+                        vector<string> split2;
+                        if(currCs.at(i).find("(") == 0)
+                        {
+                            currCs.at(i).erase(0, 1);
+                        }
+                        else
+                        {
+                            currCs.erase(currCs.begin());
+                        }
+                        currCommand.push_back(currCs.at(i));
+                        ++i;
+                        for(; currCs.at(i).find(")") == string::npos; ++i)
+                        {
+                            currCommand.push_back(currCs.at(i));
+                            if(currCs.at(i) == "&&" || currCs.at(i) == "||")
+                            {
+                                found = true;
+                            }
+                        }
+                        if(found)
+                        {
+                            if(currCs.at(i).at(0) != ')')
+                            {
+                                string temp = currCs.at(i);
+                                temp.erase(temp.size() - 1, 1);
+                                currCs.at(i) = temp;
+                                currCommand.push_back(currCs.at(i));
+                            }
+                            ++i;
+                            if(i < currCs.size() - 1)
+                            {
+                                nextConnector = currCs.at(i);
+                            }
+                            unsigned t = 0;
+                            while(currCommand.at(t) != "&&" && currCommand.at(t) != "||")
+                            {
+                                ++t;
+                            }
+                            for(unsigned g = 0; g < t; ++g)
+                            {
+                                split1.push_back(currCommand.at(g));
+                            }
+                            for(unsigned g = (t + 1); g < currCommand.size(); ++g)
+                            {
+                                split2.push_back(currCommand.at(g));
+                            }
+                            Base* temp1;
+                            Base* temp2;
+                            if(split1.at(0) == "test")
+                            {
+                                temp1 = new Test(split1);
+                            }
+                            else
+                            {
+                                temp1 = new Command(split1);
+                            }
+                            if(split2.at(0) == "test")
+                            {
+                                temp2 = new Test(split2);
+                            }
+                            else
+                            {
+                                temp2 = new Command(split2);
+                            }
+                            Base * temp3;
+                            if(currCommand.at(t) == "&&")
+                            {
+                                temp3 = new Andand(temp1, temp2);
+                            }
+                            else
+                            {
+                                temp3 = new Oror(temp1, temp2);
+                            }
+                            Base* temp4;
+                            if(prevConnector == "")
+                            {
+                                currCmds.push_back(temp3);
+                                prevConnector = nextConnector;
+                            }
+                            else if(prevConnector == "&&")
+                            {
+                                temp4 = new Andand(
+                                    currCmds.at(currCmds.size() - 1), temp3);
+                                currCmds.pop_back();
+                                currCmds.push_back(temp4);
+                                prevConnector = nextConnector;
+                            }
+                            else
+                            {
+                                temp4 = new Oror(
+                                    currCmds.at(currCmds.size() - 1), temp3);
+                                currCmds.pop_back();
+                                currCmds.push_back(temp4);
+                                prevConnector = nextConnector;
+                            }
+                            currCommand.resize(0);
+                        }
+                        else
+                        {
+                            Base *temp;
+                            if(currCommand.at(0) == "(")
+                            {
+                                currCommand.erase(currCommand.begin());
+                            }
+                            else if(currCommand.at(0).find("(") != string::npos)
+                            {
+                                currCommand.at(0).erase(0, 1);
+                            }
+                            if(currCommand.at(currCommand.size() - 1) == ")")
+                            {
+                                currCommand.pop_back();
+                            }
+                            else if(currCommand.at(currCommand.size() - 1).find(")") != string::npos)
+                            {
+                                currCommand.at(currCommand.size() - 1).erase(currCommand.size() - 1, 1);
+                            }
+                            if(currCommand.at(0) == "test")
+                            {
+                                temp = new Test(currCommand);
+                            }
+                            else {
+                                temp = new Command(currCommand);
+                            }
+                            currCmds.push_back(temp);
+                        }
+                    }
+                    else
+                    {
+                        currCommand.push_back(currCs.at(i));
+                        if(currCs.at(i) == "&&" || currCs.at(i) == "||")
+                        {
+                            nextConnector = currCs.at(i);
+                            currCommand.pop_back();
+                            if(prevConnector == "")
+                            {
+                                Base* temp5;
+                                if(currCommand.at(0) == "test")
+                                {
+                                    temp5 = new Test(currCommand);
+                                }
+                                else
+                                {
+                                    temp5 = new Command(currCommand);
+                                }
+                                currCmds.push_back(temp5);
+                                currCommand.resize(0);
+                            }
+                            else if(prevConnector == "&&")
+                            {
+                                Base* temp6;
+                                if(currCommand.at(0) == "test")
+                                {
+                                    temp6 = new Test(currCommand);
+                                }
+                                else
+                                {
+                                    temp6 = new Command(currCommand);
+                                }
+                                Base * temp5 = new Andand(
+                                    currCmds.at(currCmds.size() - 1), temp6);
+                                currCmds.pop_back();
+                                currCmds.push_back(temp5);
+                                currCommand.resize(0);
+                            }
+                            else
+                            {
+                                Base* temp6;
+                                if(currCommand.at(0) == "test")
+                                {
+                                    temp6 = new Test(currCommand);
+                                }
+                                else
+                                {
+                                    temp6 = new Command(currCommand);
+                                }
+                                Base * temp5 = new Oror(
+                                    currCmds.at(currCmds.size() - 1), temp6);
+                                currCmds.pop_back();
+                                currCmds.push_back(temp5);
+                                currCommand.resize(0);
+                            }
+                            prevConnector = nextConnector;
+                            currCommand.resize(0);
+                        }
+                    }
+                }
             }
             //This runs if there no connectors left after semicolon detecting.
             else {
@@ -218,6 +412,22 @@ void Processes::parse(string input)
                     currCommand.push_back(currCs.at(k));
                 }
                 Base *temp;
+                if(currCommand.at(0) == "(")
+                {
+                    currCommand.erase(currCommand.begin());
+                }
+                else if(currCommand.at(0).find("(") != string::npos)
+                {
+                    currCommand.at(0).erase(0, 1);
+                }
+                if(currCommand.at(currCommand.size() - 1) == ")")
+                {
+                    currCommand.pop_back();
+                }
+                else if(currCommand.at(currCommand.size() - 1).find(")") != string::npos)
+                {
+                    currCommand.at(currCommand.size() - 1).erase(currCommand.size() - 1, 1);
+                }
                 if(currCommand.at(0) == "test")
                 {
                     temp = new Test(currCommand);
@@ -274,6 +484,10 @@ void Processes::parse(string input)
         {
             detected = true;
             break;
+        }
+        if(currCs.at(j).find("(") != string::npos)
+        {
+            parenthesis = true;
         }
     }
     //If it detects them, it sends them to be parsed,
@@ -362,7 +576,201 @@ void Processes::parse(string input)
     }
     else if(detected && parenthesis)
     {
-        
+        string prevConnector;
+        string nextConnector;
+        vector<string> currCommand;
+        for(unsigned i = 0; i < currCs.size(); ++i)
+        {
+            if(currCs.at(i).find("(") != string::npos)
+            {
+                bool found = false;
+                vector<string> split1;
+                vector<string> split2;
+                if(currCs.at(i).find("(") == 0)
+                {
+                    currCs.at(i).erase(0, 1);
+                }
+                else
+                {
+                    currCs.erase(currCs.begin());
+                }
+                currCommand.push_back(currCs.at(i));
+                ++i;
+                for(; currCs.at(i).find(")") == string::npos; ++i)
+                {
+                    currCommand.push_back(currCs.at(i));
+                    if(currCs.at(i) == "&&" || currCs.at(i) == "||")
+                    {
+                        found = true;
+                    }
+                }
+                if(found)
+                {
+                    if(currCs.at(i).at(0) != ')')
+                    {
+                        string temp = currCs.at(i);
+                        temp.erase(temp.size() - 1, 1);
+                        currCs.at(i) = temp;
+                        currCommand.push_back(currCs.at(i));
+                    }
+                    ++i;
+                    if(i < currCs.size() - 1)
+                    {
+                        nextConnector = currCs.at(i);
+                    }
+                    unsigned t = 0;
+                    while(currCommand.at(t) != "&&" && currCommand.at(t) != "||")
+                    {
+                        ++t;
+                    }
+                    for(unsigned g = 0; g < t; ++g)
+                    {
+                        split1.push_back(currCommand.at(g));
+                    }
+                    for(unsigned g = (t + 1); g < currCommand.size(); ++g)
+                    {
+                        split2.push_back(currCommand.at(g));
+                    }
+                    Base* temp1;
+                    Base* temp2;
+                    if(split1.at(0) == "test")
+                    {
+                        temp1 = new Test(split1);
+                    }
+                    else
+                    {
+                        temp1 = new Command(split1);
+                    }
+                    if(split2.at(0) == "test")
+                    {
+                        temp2 = new Test(split2);
+                    }
+                    else
+                    {
+                        temp2 = new Command(split2);
+                    }
+                    Base * temp3;
+                    if(currCommand.at(t) == "&&")
+                    {
+                        temp3 = new Andand(temp1, temp2);
+                    }
+                    else
+                    {
+                        temp3 = new Oror(temp1, temp2);
+                    }
+                    Base* temp4;
+                    if(prevConnector == "")
+                    {
+                        currCmds.push_back(temp3);
+                        prevConnector = nextConnector;
+                    }
+                    else if(prevConnector == "&&")
+                    {
+                        temp4 = new Andand(
+                            currCmds.at(currCmds.size() - 1), temp3);
+                        currCmds.pop_back();
+                        currCmds.push_back(temp4);
+                        prevConnector = nextConnector;
+                    }
+                    else
+                    {
+                        temp4 = new Oror(
+                            currCmds.at(currCmds.size() - 1), temp3);
+                        currCmds.pop_back();
+                        currCmds.push_back(temp4);
+                        prevConnector = nextConnector;
+                    }
+                    currCommand.resize(0);
+                }
+                else
+                {
+                    Base *temp;
+                    if(currCommand.at(0) == "(")
+                    {
+                        currCommand.erase(currCommand.begin());
+                    }
+                    else if(currCommand.at(0).find("(") != string::npos)
+                    {
+                        currCommand.at(0).erase(0, 1);
+                    }
+                    if(currCommand.at(currCommand.size() - 1) == ")")
+                    {
+                        currCommand.pop_back();
+                    }
+                    else if(currCommand.at(currCommand.size() - 1).find(")") != string::npos)
+                    {
+                        currCommand.at(currCommand.size() - 1).erase(currCommand.size() - 1, 1);
+                    }
+                    if(currCommand.at(0) == "test")
+                    {
+                        temp = new Test(currCommand);
+                    }
+                    else {
+                        temp = new Command(currCommand);
+                    }
+                    currCmds.push_back(temp);
+                }
+            }
+            else
+            {
+                currCommand.push_back(currCs.at(i));
+                if(currCs.at(i) == "&&" || currCs.at(i) == "||")
+                {
+                    nextConnector = currCs.at(i);
+                    currCommand.pop_back();
+                    if(prevConnector == "")
+                    {
+                        Base* temp5;
+                        if(currCommand.at(0) == "test")
+                        {
+                            temp5 = new Test(currCommand);
+                        }
+                        else
+                        {
+                            temp5 = new Command(currCommand);
+                        }
+                        currCmds.push_back(temp5);
+                        currCommand.resize(0);
+                    }
+                    else if(prevConnector == "&&")
+                    {
+                        Base* temp6;
+                        if(currCommand.at(0) == "test")
+                        {
+                            temp6 = new Test(currCommand);
+                        }
+                        else
+                        {
+                            temp6 = new Command(currCommand);
+                        }
+                        Base * temp5 = new Andand(
+                            currCmds.at(currCmds.size() - 1), temp6);
+                        currCmds.pop_back();
+                        currCmds.push_back(temp5);
+                        currCommand.resize(0);
+                    }
+                    else
+                    {
+                        Base* temp6;
+                        if(currCommand.at(0) == "test")
+                        {
+                            temp6 = new Test(currCommand);
+                        }
+                        else
+                        {
+                            temp6 = new Command(currCommand);
+                        }
+                        Base * temp5 = new Oror(
+                            currCmds.at(currCmds.size() - 1), temp6);
+                        currCmds.pop_back();
+                        currCmds.push_back(temp5);
+                        currCommand.resize(0);
+                    }
+                    prevConnector = nextConnector;
+                    currCommand.resize(0);
+                }
+            }
+        }
     }
     else {
         vector<string> currCommand;
