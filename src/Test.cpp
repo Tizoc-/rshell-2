@@ -60,7 +60,7 @@ int Test::execute()
             return runStat;
         }
         cout << "True" << endl;
-        return runStat + 1;
+        return runStat;
     }
     else if(dashd)
     {
@@ -77,7 +77,7 @@ int Test::execute()
         if(!dashd)
         {
             cout << "True" << endl;
-            return runStat + 1;
+            return runStat;
         }
         cout << "False" << endl;
         return runStat - 1;
@@ -95,7 +95,7 @@ int Test::execute()
         if(!dashf)
         {
             cout << "True" << endl;
-            return runStat + 1;
+            return runStat;
         }
         cout << "False" << endl;
         return runStat - 1;
