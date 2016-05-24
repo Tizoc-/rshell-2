@@ -115,6 +115,7 @@ void Processes::parse(string input)
             }
             //Here, we detect the presence of connectors.
             bool detected = false;
+            bool parenthesis = true;
             for(unsigned j = 0; j < currCs.size(); ++j)
             {
                 if(currCs.at(j) == "||" || currCs.at(j) == "&&")
@@ -122,12 +123,16 @@ void Processes::parse(string input)
                     detected = true;
                     break;
                 }
+                if(currCs.at(j).find("(") != string::npos)
+                {
+                    parenthesis = true;
+                }
             }
             //If it detects one, it sends the vector to a loop
             //that runs until the end of the current command string.
             //It stops at the next connector, looks at the previous connector,
             //and creates objects and links them correspondingly.
-            if(detected)
+            if(detected && !parenthsis)
             {
                 string prevConnector;
                 string nextConnector;
@@ -201,6 +206,10 @@ void Processes::parse(string input)
                     }
                 }
             }
+            else if(detected && parenthesis)
+            {
+                
+            }
             //This runs if there no connectors left after semicolon detecting.
             else {
                 vector<string> currCommand;
@@ -258,6 +267,7 @@ void Processes::parse(string input)
     }
     //Again, detects whether the string has connectors.
     bool detected = false;
+    bool parenthesis = false;
     for(unsigned j = 0; j < currCs.size(); ++j)
     {
         if(currCs.at(j) == "&&" || currCs.at(j) == "||")
@@ -269,7 +279,7 @@ void Processes::parse(string input)
     //If it detects them, it sends them to be parsed,
     //where connector objects are created after the first command is created
     //and subsequently linked until the end of parsing.
-    if(detected)
+    if(detected && !parenthesis)
     {
         string prevConnector;
         string nextConnector;
@@ -349,6 +359,10 @@ void Processes::parse(string input)
             currCmds.pop_back();
             currCmds.push_back(temp2);
         }
+    }
+    else if(detected && parenthesis)
+    {
+        
     }
     else {
         vector<string> currCommand;
