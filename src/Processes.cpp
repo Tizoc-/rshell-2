@@ -38,6 +38,7 @@ int Processes::execute()
     {
         temp = currCmds.at(i)->execute();
     }
+    this->reset();
     return temp;
 }
 //Processes parses the code to split it into separate command lines
@@ -483,7 +484,6 @@ void Processes::parse(string input)
         if(currCs.at(j) == "&&" || currCs.at(j) == "||")
         {
             detected = true;
-            break;
         }
         if(currCs.at(j).find("(") != string::npos)
         {
@@ -689,7 +689,7 @@ void Processes::parse(string input)
                     {
                         currCommand.erase(currCommand.begin());
                     }
-                    else if(currCommand.at(0).find("(") != string::npos)
+                    else
                     {
                         currCommand.at(0).erase(0, 1);
                     }
@@ -773,7 +773,26 @@ void Processes::parse(string input)
         }
     }
     else {
+        bool yoyo = false;
         vector<string> currCommand;
+        if(currCs.at(0) == "(")
+        {
+            yoyo = true;
+            currCs.erase(currCs.begin());
+        }
+        if(currCs.at(0).at(0) == '(')
+        {
+            yoyo = true;
+            currCs.at(0).erase(0, 1);
+        }
+        if(currCs.at(currCs.size() - 1) == ")" && yoyo)
+        {
+            currCs.erase(currCs.end());
+        }
+        if(currCs.at(currCs.size() - 1).at(currCs.at(currCs.size() - 1).size() - 1) == ')' && yoyo)
+        {
+            currCs.at(currCs.size() - 1).erase(currCs.at(currCs.size() - 1).size() - 1, 1);
+        }
         for(unsigned k = 0; k < currCs.size(); ++k)
         {
             currCommand.push_back(currCs.at(k));

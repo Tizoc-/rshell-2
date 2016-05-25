@@ -32,7 +32,6 @@ int main()
         mainProcess.parse(input);
         mainProcess.execute();
         mainProcess.reset();
-        input = "";
         cout << pwd->pw_name << "@" << host << " $ ";
         getline(cin, input);
     }
