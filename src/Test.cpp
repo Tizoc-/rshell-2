@@ -42,6 +42,7 @@ int Test::execute()
         }
     }
     runStat = 0;
+    unsigned check = cmdVec.size() - 1;
     char** cstrings = new char*[cmdVec.size() + 1];
     unsigned i = 0;
     for(; i < this->cmdVec.size(); ++i)
@@ -54,7 +55,7 @@ int Test::execute()
     
     if(!dashf && !dashd)
     {
-        if (stat(cstrings[2], &sb) == -1) {
+        if (stat(cstrings[check], &sb) == -1) {
             cout << "(False)" << endl;
             runStat = 1;
             return runStat;
@@ -64,7 +65,7 @@ int Test::execute()
     }
     else if(dashd)
     {
-        if (stat(cstrings[2], &sb) == -1) {
+        if (stat(cstrings[check], &sb) == -1) {
             cout << "(False)" << endl;
             runStat = 1;
             return runStat;
@@ -83,7 +84,7 @@ int Test::execute()
         return runStat - 1;
     }
     else{
-        if (stat(cstrings[2], &sb) == -1) {
+        if (stat(cstrings[check], &sb) == -1) {
             cout << "(False)" << endl;
             runStat = -1;
             return runStat;
