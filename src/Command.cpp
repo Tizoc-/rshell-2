@@ -63,10 +63,10 @@ int Command::execute()
     {
         //Child process!
         runStat = execvp(cstrings[0], cstrings);
-        if(runStat != 1)
+        if(runStat != 0)
         {
             perror("Command has failed to execute");
-            return runStat;
+            return -1;
         }
     }
     int status;
