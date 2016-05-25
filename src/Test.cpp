@@ -41,7 +41,7 @@ int Test::execute()
             dashf = true;
         }
     }
-    runStat = 1;
+    runStat = 0;
     char** cstrings = new char*[cmdVec.size() + 1];
     unsigned i = 0;
     for(; i < this->cmdVec.size(); ++i)
@@ -55,18 +55,18 @@ int Test::execute()
     if(!dashf && !dashd)
     {
         if (stat(cstrings[2], &sb) == -1) {
-            cout << "False" << endl;
-            runStat = -1;
+            cout << "(False)" << endl;
+            runStat = 1;
             return runStat;
         }
-        cout << "True" << endl;
+        cout << "(True)" << endl;
         return runStat;
     }
     else if(dashd)
     {
         if (stat(cstrings[2], &sb) == -1) {
-            cout << "False" << endl;
-            runStat = -1;
+            cout << "(False)" << endl;
+            runStat = 1;
             return runStat;
         }
         
@@ -76,15 +76,15 @@ int Test::execute()
         
         if(!dashd)
         {
-            cout << "True" << endl;
+            cout << "(True)" << endl;
             return runStat;
         }
-        cout << "False" << endl;
+        cout << "(False)" << endl;
         return runStat - 1;
     }
     else{
         if (stat(cstrings[2], &sb) == -1) {
-            cout << "False" << endl;
+            cout << "(False)" << endl;
             runStat = -1;
             return runStat;
         }
@@ -94,10 +94,10 @@ int Test::execute()
         
         if(!dashf)
         {
-            cout << "True" << endl;
+            cout << "(True)" << endl;
             return runStat;
         }
-        cout << "False" << endl;
+        cout << "(False)" << endl;
         return runStat - 1;
     }
     delete[] cstrings;
