@@ -45,11 +45,23 @@ char *convert(const std::string & s)
 //and returns the runStat.
 int Command::execute()
 {
+    bool pipetime = false;
     if(cmdVec.at(0) == "exit")
     {
         exit(0);
     }
-    runStat = 1;
+    runStat = 0;
+    for(unsigned j = 0; j < cmdVec.size(); ++j)
+    {
+        if(cmdVec.at(j) == "|" || cmdVec.at(j) == "<" || cmdVec.at(j) == ">>" || cmdVec.at(j) == ">")
+        {
+            pipetime = true;
+        }
+    }
+    if(pipetime)
+    {
+        return pipeexecute();
+    }
     char** cstrings = new char*[cmdVec.size() + 1];
     unsigned i = 0;
     for(; i < this->cmdVec.size(); ++i)
@@ -82,4 +94,9 @@ int Command::execute()
 int Command::getrunstat()
 {
     return runStat;
+}
+
+int Command::pipeexecute()
+{
+    return 0;
 }
