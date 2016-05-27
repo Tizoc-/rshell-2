@@ -10,6 +10,9 @@
 #include <cstring>
 #include <sys/wait.h>
 #include <algorithm>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 using namespace std;
 
 #include "Base.h"
