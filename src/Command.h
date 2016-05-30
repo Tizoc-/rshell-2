@@ -13,6 +13,6 @@ class Command: public Base {
     Command(std::vector<std::string> currCommand);
     int execute();
     int getrunstat();
-    int pipeexecute();
+    int redirection(bool pipes, int numpipes);
 };
 #endif
