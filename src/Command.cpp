@@ -157,7 +157,137 @@ int Command::redirection(bool pipes, int numPipes)
     {
         if(pipes)
         {
+            int in, out;
+            int status;
+            unsigned indexforless = 0;
+            unsigned indexforover = 0;
+            for(unsigned i = 0; i < cmdVec.size(); ++i)
+            {
+                if(cmdVec.at(i) == "<")
+                {
+                    indexforless = i;
+                }
+                if(cmdVec.at(i) == ">")
+                {
+                    indexforover = i;
+                }
+            }
+            char** cstrings = new char*[indexforless + 1];
+            unsigned m = 0;
+            for(; m < indexforless; ++m)
+            {
+                cstrings[m] = new char[cmdVec[m].size() + 1];
+                std::strcpy(cstrings[m], cmdVec[m].c_str());
+            }
+            cstrings[m] = NULL;
+            vector<string> temp;
+            unsigned c = 0;
+            for(; c < cmds.at(cmds.size() - 1).size(); ++c)
+            {
+                temp.push_back(cmds.at(cmds.size() - 1).at(c));
+                if(cmds.at(cmds.size() - 1).at(c) == ">")
+                {
+                    break;
+                }
+            }
+            temp.pop_back();
+            char** cstrings4 = new char*[temp.size() + 1];
+            unsigned x = 0;
+            for(; x < temp.size(); ++x)
+            {
+                cstrings4[x] = new char[temp.at(x).size() + 1];
+                std::strcpy(cstrings4[x], temp.at(x).c_str());
+            }
+            cstrings4[x] = NULL;
+            char** cstrings2 = new char*[1];
+            char** cstrings3 = new char*[1];
             
+            cstrings2[0] = new char[cmdVec.at(indexforless + 1).size() + 1];
+            std::strcpy(cstrings2[0], cmdVec[indexforless + 1].c_str());
+            cstrings3[0] = new char[cmdVec.at(indexforover + 1).size() + 1];
+            std::strcpy(cstrings3[0], cmdVec[indexforover + 1].c_str());
+            int i = 0;
+            pid_t pid;
+            int g = 2 * numPipes;
+            int* pipefds = new int[g];
+        
+            for(i = 0; i < (numPipes); i++){
+                if(pipe(pipefds + i*2) < 0) {
+                    perror("Couldn't pipe");
+                    return -1;
+                }
+            }
+            unsigned b = 0;
+            int j = 0;
+            while(b < cmds.size()) {
+                pid = fork();
+                if(pid == 0) {
+                    //if not last command
+                    if(b < cmds.size() - 1){
+                        if(b == 0)
+                        {
+                            in = open(cstrings2[0], O_RDONLY);
+                            dup2(in, 0);
+                            close(in);
+                        }
+                        if(dup2(pipefds[j + 1], 1) < 0){
+                            perror("Problem with dup2");
+                            return -1;
+                        }
+                    }
+                    //if not first command && j != 2*numPipes
+                    if(j != 0 ){
+                        if(dup2(pipefds[j - 2], 0) < 0){
+                            perror("Problem with dup2");///j-2 0 j+1 1
+                            return -1;
+                        }
+                        if(b == cmds.size() - 1)
+                        {
+                            out = open(cstrings3[0], O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+                            dup2(out, 1);
+                            close(out);
+                        }
+                    }
+                    for(i = 0; i < 2*numPipes; i++){
+                        close(pipefds[i]);
+                    }
+                    if(b > 0 && b < cmds.size() - 1) {
+                        if(execvp(ary[b][0], ary[b]) < 0){
+                            perror("Execvp problem");
+                            return -1;
+                        }
+                    }
+                    else if(b == 0)
+                    {
+                        if(execvp(cstrings[0], cstrings) < 0)
+                        {
+                            perror("Execvp problem");
+                            return -1;
+                        }
+                    }
+                    else
+                    {
+                        if(execvp(cstrings4[0], cstrings4) < 0)
+                        {
+                            perror("Execvp problem");
+                            return -1;
+                        }
+                    }
+                } else if(pid < 0){
+                    perror("Error forking");
+                    return -1;
+                }
+                ++b;
+                j += 2;
+            }
+            /**Parent closes the pipes and wait for children*/
+            for(i = 0; i < 2 * numPipes; i++){
+                close(pipefds[i]);
+            }
+            for(i = 0; i < numPipes + 1; i++)
+            {
+                wait(&status);
+            }
         }
         else
         {
@@ -227,7 +357,137 @@ int Command::redirection(bool pipes, int numPipes)
     {
         if(pipes)
         {
+            int in, out;
+            int status;
+            unsigned indexforless = 0;
+            unsigned indexforover = 0;
+            for(unsigned i = 0; i < cmdVec.size(); ++i)
+            {
+                if(cmdVec.at(i) == "<")
+                {
+                    indexforless = i;
+                }
+                if(cmdVec.at(i) == ">")
+                {
+                    indexforover = i;
+                }
+            }
+            char** cstrings = new char*[indexforless + 1];
+            unsigned m = 0;
+            for(; m < indexforless; ++m)
+            {
+                cstrings[m] = new char[cmdVec[m].size() + 1];
+                std::strcpy(cstrings[m], cmdVec[m].c_str());
+            }
+            cstrings[m] = NULL;
+            vector<string> temp;
+            unsigned c = 0;
+            for(; c < cmds.at(cmds.size() - 1).size(); ++c)
+            {
+                temp.push_back(cmds.at(cmds.size() - 1).at(c));
+                if(cmds.at(cmds.size() - 1).at(c) == ">")
+                {
+                    break;
+                }
+            }
+            temp.pop_back();
+            char** cstrings4 = new char*[temp.size() + 1];
+            unsigned x = 0;
+            for(; x < temp.size(); ++x)
+            {
+                cstrings4[x] = new char[temp.at(x).size() + 1];
+                std::strcpy(cstrings4[x], temp.at(x).c_str());
+            }
+            cstrings4[x] = NULL;
+            char** cstrings2 = new char*[1];
+            char** cstrings3 = new char*[1];
             
+            cstrings2[0] = new char[cmdVec.at(indexforless + 1).size() + 1];
+            std::strcpy(cstrings2[0], cmdVec[indexforless + 1].c_str());
+            cstrings3[0] = new char[cmdVec.at(indexforover + 1).size() + 1];
+            std::strcpy(cstrings3[0], cmdVec[indexforover + 1].c_str());
+            int i = 0;
+            pid_t pid;
+            int g = 2 * numPipes;
+            int* pipefds = new int[g];
+        
+            for(i = 0; i < (numPipes); i++){
+                if(pipe(pipefds + i*2) < 0) {
+                    perror("Couldn't pipe");
+                    return -1;
+                }
+            }
+            unsigned b = 0;
+            int j = 0;
+            while(b < cmds.size()) {
+                pid = fork();
+                if(pid == 0) {
+                    //if not last command
+                    if(b < cmds.size() - 1){
+                        if(b == 0)
+                        {
+                            in = open(cstrings2[0], O_RDONLY);
+                            dup2(in, 0);
+                            close(in);
+                        }
+                        if(dup2(pipefds[j + 1], 1) < 0){
+                            perror("Problem with dup2");
+                            return -1;
+                        }
+                    }
+                    //if not first command && j != 2*numPipes
+                    if(j != 0 ){
+                        if(dup2(pipefds[j - 2], 0) < 0){
+                            perror("Problem with dup2");///j-2 0 j+1 1
+                            return -1;
+                        }
+                        if(b == cmds.size() - 1)
+                        {
+                            out = open(cstrings3[0], O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+                            dup2(out, 1);
+                            close(out);
+                        }
+                    }
+                    for(i = 0; i < 2*numPipes; i++){
+                        close(pipefds[i]);
+                    }
+                    if(b > 0 && b < cmds.size() - 1) {
+                        if(execvp(ary[b][0], ary[b]) < 0){
+                            perror("Execvp problem");
+                            return -1;
+                        }
+                    }
+                    else if(b == 0)
+                    {
+                        if(execvp(cstrings[0], cstrings) < 0)
+                        {
+                            perror("Execvp problem");
+                            return -1;
+                        }
+                    }
+                    else
+                    {
+                        if(execvp(cstrings4[0], cstrings4) < 0)
+                        {
+                            perror("Execvp problem");
+                            return -1;
+                        }
+                    }
+                } else if(pid < 0){
+                    perror("Error forking");
+                    return -1;
+                }
+                ++b;
+                j += 2;
+            }
+            /**Parent closes the pipes and wait for children*/
+            for(i = 0; i < 2 * numPipes; i++){
+                close(pipefds[i]);
+            }
+            for(i = 0; i < numPipes + 1; i++)
+            {
+                wait(&status);
+            }
         }
         else
         {
@@ -297,7 +557,96 @@ int Command::redirection(bool pipes, int numPipes)
     {
         if(pipes)
         {
+            int in;
+            int status;
+            unsigned indexforless = 0;
+            for(unsigned i = 0; i < cmdVec.size(); ++i)
+            {
+                if(cmdVec.at(i) == "<")
+                {
+                    indexforless = i;
+                }
+            }
+            char** cstrings = new char*[indexforless + 1];
+            unsigned m = 0;
+            for(; m < indexforless; ++m)
+            {
+                cstrings[m] = new char[cmdVec[m].size() + 1];
+                std::strcpy(cstrings[m], cmdVec[m].c_str());
+            }
+            cstrings[m] = NULL;
+            char** cstrings2 = new char*[1];
             
+            cstrings2[0] = new char[cmdVec.at(indexforless + 1).size() + 1];
+            std::strcpy(cstrings2[0], cmdVec[indexforless + 1].c_str());
+            int i = 0;
+            pid_t pid;
+            int g = 2 * numPipes;
+            int* pipefds = new int[g];
+        
+            for(i = 0; i < (numPipes); i++){
+                if(pipe(pipefds + i*2) < 0) {
+                    perror("Couldn't pipe");
+                    return -1;
+                }
+            }
+            unsigned b = 0;
+            int j = 0;
+            while(b < cmds.size()) {
+                pid = fork();
+                if(pid == 0) {
+                    //if not last command
+                    if(b < cmds.size() - 1){
+                        if(b == 0)
+                        {
+                            in = open(cstrings2[0], O_RDONLY);
+                            dup2(in, 0);
+                            close(in);
+                        }
+                        if(dup2(pipefds[j + 1], 1) < 0){
+                            perror("Problem with dup2");
+                            return status;
+                        }
+                    }
+                    //if not first command && j != 2*numPipes
+                    if(j != 0 ){
+                        if(dup2(pipefds[j - 2], 0) < 0){
+                            perror("Problem with dup2");///j-2 0 j+1 1
+                            return status;
+                        }
+                    }
+                    for(i = 0; i < 2*numPipes; i++){
+                        close(pipefds[i]);
+                    }
+                    if(b > 0) {
+                        if(execvp(ary[b][0], ary[b]) < 0){
+                            perror("Execvp problem");
+                            return status;
+                        }
+                    }
+                    else if(b == 0)
+                    {
+                        if(execvp(cstrings[0], cstrings) < 0)
+                        {
+                            perror("Execvp problem");
+                            return status;
+                        }
+                    }
+                } else if(pid < 0){
+                    perror("Error forking");
+                    return status;
+                }
+                ++b;
+                j += 2;
+            }
+            /**Parent closes the pipes and wait for children*/
+            for(i = 0; i < 2 * numPipes; i++){
+                close(pipefds[i]);
+            }
+            for(i = 0; i < numPipes + 1; i++)
+            {
+                wait(&status);
+            }
         }
         else
         {
@@ -354,7 +703,107 @@ int Command::redirection(bool pipes, int numPipes)
     {
         if(pipes)
         {
+            int out;
+            int status;
+            unsigned indexforover = 0;
+            for(unsigned i = 0; i < cmdVec.size(); ++i)
+            {
+                if(cmdVec.at(i) == ">")
+                {
+                    indexforover = i;
+                }
+            }
+            vector<string> temp;
+            unsigned c = 0;
+            for(; c < cmds.at(cmds.size() - 1).size(); ++c)
+            {
+                temp.push_back(cmds.at(cmds.size() - 1).at(c));
+                if(cmds.at(cmds.size() - 1).at(c) == ">" || cmds.at(cmds.size() - 1).at(c) == ">>")
+                {
+                    break;
+                }
+            }
+            temp.pop_back();
+            char** cstrings4 = new char*[temp.size() + 1];
+            unsigned x = 0;
+            for(; x < temp.size(); ++x)
+            {
+                cstrings4[x] = new char[temp.at(x).size() + 1];
+                std::strcpy(cstrings4[x], temp.at(x).c_str());
+            }
+            cstrings4[x] = NULL;
+            char** cstrings3 = new char*[1];
             
+            cstrings3[0] = new char[cmdVec.at(indexforover + 1).size() + 1];
+            std::strcpy(cstrings3[0], cmdVec[indexforover + 1].c_str());
+            int i = 0;
+            pid_t pid;
+            int g = 2 * numPipes;
+            int* pipefds = new int[g];
+        
+            for(i = 0; i < (numPipes); i++){
+                if(pipe(pipefds + i*2) < 0) {
+                    perror("Couldn't pipe");
+                    return -1;
+                }
+            }
+            unsigned b = 0;
+            int j = 0;
+            while(b < cmds.size()) {
+                pid = fork();
+                if(pid == 0) {
+                    //if not last command
+                    if(b < cmds.size() - 1){
+                        if(dup2(pipefds[j + 1], 1) < 0){
+                            perror("Problem with dup2");
+                            return -1;
+                        }
+                    }
+                    //if not first command && j != 2*numPipes
+                    if(j != 0 ){
+                        if(dup2(pipefds[j - 2], 0) < 0){
+                            perror("Problem with dup2");///j-2 0 j+1 1
+                            return -1;
+                        }
+                        if(b == cmds.size() - 1)
+                        {
+                            out = open(cstrings3[0], O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+                            dup2(out, 1);
+                            close(out);
+                        }
+                    }
+                    for(i = 0; i < 2*numPipes; i++){
+                        close(pipefds[i]);
+                    }
+                    if(b < cmds.size() - 1) {
+                        if(execvp(ary[b][0], ary[b]) < 0){
+                            perror("Execvp problem");
+                            return -1;
+                        }
+                    }
+                    else
+                    {
+                        if(execvp(cstrings4[0], cstrings4) < 0)
+                        {
+                            perror("Execvp problem");
+                            return -1;
+                        }
+                    }
+                } else if(pid < 0){
+                    perror("Error forking");
+                    return -1;
+                }
+                ++b;
+                j += 2;
+            }
+            /**Parent closes the pipes and wait for children*/
+            for(i = 0; i < 2 * numPipes; i++){
+                close(pipefds[i]);
+            }
+            for(i = 0; i < numPipes + 1; i++)
+            {
+                wait(&status);
+            }
         }
         else
         {
@@ -410,7 +859,107 @@ int Command::redirection(bool pipes, int numPipes)
     {
         if(pipes)
         {
+            int out;
+            int status;
+            unsigned indexforover = 0;
+            for(unsigned i = 0; i < cmdVec.size(); ++i)
+            {
+                if(cmdVec.at(i) == ">>")
+                {
+                    indexforover = i;
+                }
+            }
+            vector<string> temp;
+            unsigned c = 0;
+            for(; c < cmds.at(cmds.size() - 1).size(); ++c)
+            {
+                temp.push_back(cmds.at(cmds.size() - 1).at(c));
+                if(cmds.at(cmds.size() - 1).at(c) == ">" || cmds.at(cmds.size() - 1).at(c) == ">>")
+                {
+                    break;
+                }
+            }
+            temp.pop_back();
+            char** cstrings4 = new char*[temp.size() + 1];
+            unsigned x = 0;
+            for(; x < temp.size(); ++x)
+            {
+                cstrings4[x] = new char[temp.at(x).size() + 1];
+                std::strcpy(cstrings4[x], temp.at(x).c_str());
+            }
+            cstrings4[x] = NULL;
+            char** cstrings3 = new char*[1];
             
+            cstrings3[0] = new char[cmdVec.at(indexforover + 1).size() + 1];
+            std::strcpy(cstrings3[0], cmdVec[indexforover + 1].c_str());
+            int i = 0;
+            pid_t pid;
+            int g = 2 * numPipes;
+            int* pipefds = new int[g];
+        
+            for(i = 0; i < (numPipes); i++){
+                if(pipe(pipefds + i*2) < 0) {
+                    perror("Couldn't pipe");
+                    return -1;
+                }
+            }
+            unsigned b = 0;
+            int j = 0;
+            while(b < cmds.size()) {
+                pid = fork();
+                if(pid == 0) {
+                    //if not last command
+                    if(b < cmds.size() - 1){
+                        if(dup2(pipefds[j + 1], 1) < 0){
+                            perror("Problem with dup2");
+                            return -1;
+                        }
+                    }
+                    //if not first command && j != 2*numPipes
+                    if(j != 0 ){
+                        if(dup2(pipefds[j - 2], 0) < 0){
+                            perror("Problem with dup2");///j-2 0 j+1 1
+                            return -1;
+                        }
+                        if(b == cmds.size() - 1)
+                        {
+                            out = open(cstrings3[0], O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+                            dup2(out, 1);
+                            close(out);
+                        }
+                    }
+                    for(i = 0; i < 2*numPipes; i++){
+                        close(pipefds[i]);
+                    }
+                    if(b < cmds.size() - 1) {
+                        if(execvp(ary[b][0], ary[b]) < 0){
+                            perror("Execvp problem");
+                            return -1;
+                        }
+                    }
+                    else
+                    {
+                        if(execvp(cstrings4[0], cstrings4) < 0)
+                        {
+                            perror("Execvp problem");
+                            return -1;
+                        }
+                    }
+                } else if(pid < 0){
+                    perror("Error forking");
+                    return -1;
+                }
+                ++b;
+                j += 2;
+            }
+            /**Parent closes the pipes and wait for children*/
+            for(i = 0; i < 2 * numPipes; i++){
+                close(pipefds[i]);
+            }
+            for(i = 0; i < numPipes + 1; i++)
+            {
+                wait(&status);
+            }
         }
         else
         {
@@ -490,7 +1039,7 @@ int Command::redirection(bool pipes, int numPipes)
                 }
                 //if not first command&& j!= 2*numPipes
                 if(j != 0 ){
-                    if(dup2(pipefds[j-2], 0) < 0){
+                    if(dup2(pipefds[j - 2], 0) < 0){
                         perror("Problem with dup2");///j-2 0 j+1 1
                         return -1;
                     }
