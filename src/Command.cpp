@@ -105,12 +105,14 @@ int Command::getrunstat()
 {
     return runStat;
 }
-//Runs commands that have piping/input redirection/outputredirection
+//Runs commands that have piping/input redirection/output redirection
 int Command::redirection(bool pipes, int numPipes)
 {
+    //Setting up a bunch of proxy string vectors
     vector<unsigned> indices;
     vector<vector<string> > cmds;
     vector<string> temp;
+    //This is to initialize a 2d array of char arrays for piping purposes
     for(unsigned h = 0; h < cmdVec.size(); ++h)
     {
         temp.push_back(cmdVec.at(h));
@@ -121,6 +123,7 @@ int Command::redirection(bool pipes, int numPipes)
             temp.resize(0);
         }
     }
+    //Hear we test the existence of redirection operators by using boolean values
     cmds.push_back(temp);
     bool inputread = false;
     bool overwrite = false;
@@ -140,6 +143,7 @@ int Command::redirection(bool pipes, int numPipes)
             append = true;
         }
     }
+    //This is creating the 2d array that's needed for piping purposes
     char*** ary = new char**[cmds.size()];
     for(unsigned g = 0; g < cmds.size(); ++g)
     {
@@ -153,10 +157,15 @@ int Command::redirection(bool pipes, int numPipes)
         cstrings[i] = NULL;
         ary[g] = cstrings;
     }
+    //Here's where things get tricky; we're testing for each case of i/o redirection, s we use our boolean values to check
+    //But, we also need to know whether these operators exist without the additional existence of pipes, so we need an if/else insdie each check
+    //This covers < and > together
     if(inputread && overwrite && !append)
     {
         if(pipes)
         {
+            //Here we set up the variables needed for duping, piping, and indices for determining the index of our files
+            //in the vector of strings
             int in, out;
             int status;
             unsigned indexforless = 0;
@@ -172,6 +181,7 @@ int Command::redirection(bool pipes, int numPipes)
                     indexforover = i;
                 }
             }
+            //Create an array for the filename
             char** cstrings = new char*[indexforless + 1];
             unsigned m = 0;
             for(; m < indexforless; ++m)
@@ -190,6 +200,7 @@ int Command::redirection(bool pipes, int numPipes)
                     break;
                 }
             }
+            //This is for the last part of the string vector, the output file
             temp.pop_back();
             char** cstrings4 = new char*[temp.size() + 1];
             unsigned x = 0;
@@ -206,6 +217,7 @@ int Command::redirection(bool pipes, int numPipes)
             std::strcpy(cstrings2[0], cmdVec[indexforless + 1].c_str());
             cstrings3[0] = new char[cmdVec.at(indexforover + 1).size() + 1];
             std::strcpy(cstrings3[0], cmdVec[indexforover + 1].c_str());
+            //Now we create our pipes based on how many we initially passed in
             int i = 0;
             pid_t pid;
             int g = 2 * numPipes;
@@ -217,6 +229,8 @@ int Command::redirection(bool pipes, int numPipes)
                     return -1;
                 }
             }
+            //This loop forks processes inside to properly encapsulate the algorithm for duping and executing various commands
+            //It sets up the file input/output dupes at the beginning and end, and handles the rest by duping normally
             unsigned b = 0;
             int j = 0;
             while(b < cmds.size()) {
@@ -289,6 +303,8 @@ int Command::redirection(bool pipes, int numPipes)
                 wait(&status);
             }
         }
+        //This is a much simpler clause; we don't need to use pipes or loop in one,
+        //so we can simply dupe i/o file descriptors and execute according based on our created arrays
         else
         {
             int in, out;
@@ -353,6 +369,8 @@ int Command::redirection(bool pipes, int numPipes)
             return status;
         }
     }
+    //Think of the rest of these as variations on the previously coded algorithm for determining pipes, i/o duping etc.
+    //Append only changes a flag that disables truncating and enables appending to a file
     else if(inputread && !overwrite && append)
     {
         if(pipes)
@@ -553,6 +571,10 @@ int Command::redirection(bool pipes, int numPipes)
             return status;
         }
     }
+    //Here we make even simpler versions of our original alogrithm;
+    //These are cases where just one of the operators are detected, so only one variation is made on
+    //either the stat our end of duping in our piping loop;
+    //The else statements are even easier
     else if(inputread && !overwrite && !append)
     {
         if(pipes)
@@ -1011,6 +1033,8 @@ int Command::redirection(bool pipes, int numPipes)
             return status;
         }
     }
+    //This last else statement handles the case when no i/o redirection operators are needed to be dealt with;
+    //It just simply creates a number of pipes based on the passed in value, and executes each command in the pipeline
     else
     {
         int status;
